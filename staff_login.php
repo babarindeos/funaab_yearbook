@@ -6,7 +6,7 @@ error_reporting(E_ALL);
     session_start();
     session_destroy();
     session_start();
-    $page_title = "Staff Sign-in";
+    $page_title = "Sign-in";
     // Core
     require_once("core/config.php");
     // Header
@@ -15,23 +15,58 @@ error_reporting(E_ALL);
     //require_once("config/init.php");
     require_once("nav/nav_login.php");
 
+
+
+    $err_flag = '';
+    $err_flag = 0;
+
     if (isset($_POST['formLogin'])){
        $loginUsername = $_POST['loginUsername'];
        $loginPassword = $_POST['loginPassword'];
 
-       if ($loginUsername=='admin' && $loginPassword=='directorate')
-       {
-            $_SESSION['ulogin_state'] = 200;
-            if (headers_sent()){
-                die("<br/><br/><div class='mt-5 text-center'><big><strong>You are signed-in.</strong><br/> If not re-directed. Please click on this link: <a href='cadmin/admin_dashboard.php'>SIWES Online Office.</a></big></div>");
-            }else{
-                header("location: cadmin/admin_dashboard.php");
-            }
+       if (!empty($loginUsername) && !empty($loginPassword)){
+          $staff = new StaffUser();
+
+          // password encrypt
+          //$password_encrypt = sha1(md5(sha1($loginPassword)));
+          $loginPassword = sha1(md5(sha1($loginPassword)));
+
+          $result = $staff->get_staff_by_username_password($loginUsername, $loginPassword);
+
+          if ($result->rowCount()){
+                $staff_info = $result->fetch(PDO::FETCH_ASSOC);
+
+                $_SESSION['app_login'] = 'staff';
+                $_SESSION['ulogin_state'] = $staff_info['id'];
+                $_SESSION['ulogin_userid'] = $staff_info['id'];
+                $_SESSION['username'] = $staff_info['file_no'];
+                $_SESSION['file_no'] = $staff_info['file_no'];
+                $_SESSION['names'] = $staff_info['names'];
+                $_SESSION['email'] = $staff_info['email'];
+                $_SESSION['phone'] = $staff_info['phone'];
+                $_SESSION['unit_id'] = $staff_info['unit_id'];
+                $_SESSIOn['verification_code'] = $staff_info['verification_code'];
+
+                //$_SESSION['staffData'] = $dataArray;
+
+                 if (headers_sent()){
+                     die("<br/><br/><div class='mt-5 text-center'><big><strong>You are Sign-in</strong><br/>If not re-directed. Please click on this link: <a href='staff/clearing_division.php'>Online Clearance Office</a></big></div>");
+                 }else{
+                     header("location:staff/clearing_division.php");
+                 }
+
+          }else{
+              $err_flag = 1;
+              $err_msg = 'Invalid Sign-in Credentials';
+          }
 
        }else{
-         $err_flag = 1;
-         $err_msg = "Invalid User Login";
+          $err_flag = 1;
+          $err_msg = '[Invalid Entry] Username and Password are required to sign-in';
        }
+
+
+
     }
 
  ?>
@@ -41,7 +76,7 @@ error_reporting(E_ALL);
 
        <!-- top pane //-->
        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
-           <h3>SIWES Office</h3>
+           <h3>Clearance Unit Online Office</h3>
        </div>
        <!-- end of top pane //-->
 
@@ -72,19 +107,20 @@ error_reporting(E_ALL);
 
                            <!-- Email -->
                            <div class="md-form">
-                             <input type="text" id="loginUsername" name="loginUsername" class="form-control">
+                             <input type="text" id="loginUsername" name="loginUsername" class="form-control" required>
                              <label for="username">Username</label>
                            </div>
 
                            <!-- Password -->
                            <div class="md-form">
-                             <input type="password" id="loginPassword" name="loginPassword" class="form-control">
+                             <input type="password" id="loginPassword" name="loginPassword" class="form-control" required>
                              <label for="loginPassword">Password</label>
                            </div>
-
+                           <!--
                            <div class="d-flex justify-content-around">
                              <div>
                                <!-- Remember me -->
+                               <!--
                                <div class="form-check">
                                  <input type="checkbox" class="form-check-input" id="loginFormRemember">
                                  <label class="form-check-label" for="loginFormRemember">Remember me</label>
@@ -92,9 +128,11 @@ error_reporting(E_ALL);
                              </div>
                              <div>
                                <!-- Forgot password -->
+                               <!--
                                <a href="">Forgot password?</a>
                              </div>
                            </div>
+                           //-->
 
                            <!-- Sign in button -->
                            <button name="formLogin" class="btn btn-outline-success btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign in</button>

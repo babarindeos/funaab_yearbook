@@ -1,5 +1,5 @@
 <?php
-    $baseUrl = "http://localhost/siwes/";
+    $baseUrl = "http://localhost/students_clearance/";
     $baseUrl1 = $_SERVER['DOCUMENT_ROOT'];
 
 

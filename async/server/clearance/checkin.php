@@ -31,10 +31,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
   {
 
     $division_id = $_POST['division_id'];
+    $unit_id = $_POST['unit_id'];
     $matric_no = $_POST['matric_no'];
 
     $clearance  = new StudentClearance();
-    $result = $clearance->checkIn($division_id, $matric_no);
+    $result = $clearance->checkIn($division_id, $unit_id, $matric_no);
 
     echo $result->rowCount();
 

@@ -4,8 +4,8 @@
         alt="apc logo"> //-->
         <div style="float:left;"><img src='http://hostel.unaab.edu.ng/images/FUNAAB-Logosm.png'></div>
           <div style="float:left" class='mt-3'>
-              SIWES Directorate<br/>
-          <div style='font-size:16px; margin-top:-8px;'>Federal University of Agriculture Abeokuta (FUNAAB)</div>
+              FUNAAB<br/>
+          <div style='font-size:16px; margin-top:-8px;'>Federal University of Agriculture Abeokuta</div>
 
         </div>
     </a>

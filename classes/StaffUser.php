@@ -5,10 +5,25 @@
       // public function __construct($file_no, $title, $firstname, $lastname, $othernames, $avatar){
       //     parent::__construct($file_no, $title, $firstname, $lastname, $othernames, $avatar);
       // }
+      private $username;
+      private $password;
 
       public function getUserById($user_id){
           $this->user_id = $user_id;
           $sqlQuery =  "Select * from users where id=:id";
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor::customQuery()->prepare($sqlQuery);
+
+          $stmt->bindParam(":id",$this->user_id);
+
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+      public function get_staff_by_id($user_id){
+          $this->user_id = $user_id;
+          $sqlQuery =  "Select * from staff where id=:id";
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor::customQuery()->prepare($sqlQuery);
 
@@ -54,7 +69,65 @@
       }
 
 
-    
+      public function get_staff_by_username_password($username, $password){
+          $this->username = $username;
+          $this->password = $password;
+
+          // sql statement
+          $sqlQuery = "Select * from staff where file_no=:username and password=:password";
+
+          //PDO object
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bind Params
+          $stmt->bindParam(":username", $this->username);
+          $stmt->bindParam(":password", $this->password);
+
+          // execute
+          $stmt->execute();
+
+          return $stmt;
+
+      }
+
+
+      public function confirm_user_password($user_id, $current_password_encrypt){
+          // $sqlQuery
+          $sqlQuery = "Select * from staff where id=:user_id and password=:password";
+
+          //PDO Object
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bind parameter
+          $stmt->bindParam(":user_id", $user_id);
+          $stmt->bindParam(":password", $current_password_encrypt);
+
+          // execute
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+      public function change_user_password($user_id, $new_password_encrypt){
+          //$sqlQuery
+          $sqlQuery = "Update staff set password=:password where id=:user_id";
+
+          //PDO Object
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bind Params
+          $stmt->bindParam(":user_id", $user_id);
+          $stmt->bindParam(":password", $new_password_encrypt);
+
+          // execute
+          $stmt->execute();
+
+          return $stmt;
+      }
+
   }
 
 

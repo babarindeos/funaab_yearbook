@@ -1,13 +1,13 @@
 <?php
-    //$studentData = $_SESSION['studentData'];
+    $studentData = $_SESSION['studentData'];
 
-    // $user_photo = '';
-    // if ($studentData['photo']==''){
-    //   $user_photo = $baseUrl."images/avatars/avatar-2.jpg";
-    // }else{
-    //   $user_photo = substr($studentData['photo'],1);
-    //   $user_photo = "https://portal.unaab.edu.ng{$user_photo}";
-    // }
+    $user_photo = '';
+    if ($studentData['photo']==''){
+      $user_photo = $baseUrl."images/avatars/avatar-2.jpg";
+    }else{
+      $user_photo = substr($studentData['photo'],1);
+      $user_photo = "https://portal.unaab.edu.ng{$user_photo}";
+    }
 
 
 
@@ -36,7 +36,7 @@
       </li>
       <!-- end of Home Sample //-->
 
-      <!-- Office menu 
+      <!-- Office menu
       <li class="nav-item">
         <a class="nav-link" href="<?php echo $baseUrl.'student/dept_lab_manuals.php'; ?>" id="navbarDropdownMenuLink-555"
           aria-haspopup="true" aria-expanded="false">  Home

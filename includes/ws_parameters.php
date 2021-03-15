@@ -6,7 +6,7 @@ $idPrefix = "FUN/SIW";
 //$collectionSession = date("Y") . (date('y')+1); //Application Academic Session
 $acadaSession = "2019/2020";
 $resultAcadaSession = "2017/2018"; //Session to use for HighFlyers
-$collectionSession = "201920"; 
+$collectionSession = "201920";
 $fpyAcadaSession = "2018/2019";
 $cadeseAcadaSession = "2018/2019";
 $batchBAcadaSession = "2017/2018";
@@ -23,7 +23,7 @@ $collectionAPP = "APP"; //Collection Purpose (cellection1 = APP (Application)
 $batch1 = "1";
 $batch2 = "2";
 
-$title = "$acadaSession Academic Session: Hostel Accommodation";
+$title = "$acadaSession Academic Session: Student Clearance";
 
 $payPrefix = "FUN/FEE";
 

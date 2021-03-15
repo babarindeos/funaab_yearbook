@@ -2,6 +2,6 @@
       session_start();
 
       if(!(isset($_SESSION['ulogin_state']) && $_SESSION['ulogin_state']!='')){
-        header("location:{$baseUrl}signin.php");
+        header("location:{$baseUrl}index.php");
       }
 ?>

@@ -3,28 +3,59 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
-  //session_start();
+  session_start();
 
-      $matric_no = "20162251";
 
-  //$studentData = $_SESSION['studentData'];
+    if (!(isset($_SESSION['app_login']) && $_SESSION['app_login'] != '')) {
+        header ("Location: ../index.php");
+    }
+
+
 
       $page_title = "Clearance for Students";
+
       // Core
       require_once("../core/wp_config.php");
 
-      // if (!(isset($_SESSION['app_login']) && $_SESSION['app_login'] != '')) {
-      //     header ("Location: ../index.php");
-      // }
+      // classes
+      require_once("../classes/StudentClearance.php");
+      require_once("../classes/Department.php");
+      require_once("../classes/Payment.php");
+
+
 
       // Header
       //require_once("includes/header.php");
+
       // Navigation
+
+      // Portal WebServices integrated
       require_once("../nav/student_nav.php");
 
       require_once("../includes/funaabWS.php");
       require_once("../includes/ws_functions.php");
       require_once("../includes/ws_parameters.php");
+
+
+  //----------------------- Student Data -------------------------------------------------------------
+      //Initialise
+          $studentData = $_SESSION['studentData'];
+          $matric_no = $studentData['regNumber'];
+          $surname = $studentData['surname'];
+          $firstname = $studentData['firstname'];
+          $othername = $studentData['othername'];
+          $email = $studentData['email'];
+          $emailFunaab = $studentData['funaabEmail'];
+          $phone = $studentData['phone'];
+          $photo = $studentData['photo'];
+          $collegeCode  = $studentData['collegeCode'];
+          $deptCode = $studentData['deptCode'];
+          $level  = $studentData['level'];
+
+//----------------------- End of Student Data --------------------------------------------------------
+
+       // matric_no = "15064";
+
 
 
 
@@ -56,13 +87,29 @@
           ?>
         </div>
         <!-- Clearance form //-->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
 
           <!--Accordion wrapper-->
           <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist"
                 aria-multiselectable="true">
 
                     <!-- **************** Accordion card - Department/Programme ************************************ -->
+                    <?php
+                          $division_id = 1;
+                          $clearance = new StudentClearance();
+                          $get_dept_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                          $clearance_value = $get_dept_clearance;
+
+                          $division_header_icon = "dept_header_icon";
+                          include("../functions/Clearance_Status.php");
+
+
+
+
+
+
+                    ?>
                     <div class="card">
 
                             <!--  Card header  -->
@@ -70,8 +117,8 @@
 
                                   <!--Options/ Icon-->
                                   <div class="dropdown float-left">
-                                        <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                          aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                        <button id='btn_dept_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                         </button>
                                   </div>
 
@@ -103,6 +150,17 @@
                     <!-- ****************************** Accordion card - Department/Programme ****************************** -->
 
                     <!-- ***************************** Accordion card - Library  ******************************************************-->
+                    <?php
+                          $division_id = 2;
+                          $clearance = new StudentClearance();
+                          $get_library_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                          $clearance_value = $get_library_clearance;
+
+                          $division_header_icon = "library_header_icon";
+                          include("../functions/Clearance_Status.php");
+
+                    ?>
                     <div class="card">
 
                             <!--  Card header -->
@@ -110,8 +168,8 @@
 
                                   <!--Options-->
                                   <div class="dropdown float-left">
-                                      <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                      <button id='btn_library_header' title="<?php echo $title; ?>"  class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                       </button>
 
                                   </div><!-- end of Options //-->
@@ -132,7 +190,9 @@
                             <div id="collapse79" class="collapse" role="tabpanel" aria-labelledby="heading79"
                               data-parent="#accordionEx78">
                               <div class="card-body">
-
+                                      <?php
+                                            require_once("library.php");
+                                      ?>
 
 
                               </div>
@@ -142,14 +202,25 @@
                     <!-- **************************** End of Accordion card - Library ***************** //-->
 
                     <!-- **************************** Accordion card - Health Centre ****************** //-->
+                    <?php
+                          $division_id = 3;
+                          $clearance = new StudentClearance();
+                          $get_health_center_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                          $clearance_value = $get_health_center_clearance;
+
+                          $division_header_icon = "health_center_header_icon";
+                          include("../functions/Clearance_Status.php");
+
+                    ?>
                     <div class="card">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab" id="heading80">
                                   <!--Options-->
                                   <div class="dropdown float-left">
-                                    <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                      aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                    <button id='btn_health_center_header'  title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                      aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                     </button>
                                   </div><!-- end of options //-->
 
@@ -167,7 +238,9 @@
                                 <div id="collapse80" class="collapse" role="tabpanel" aria-labelledby="heading80"
                                   data-parent="#accordionEx78">
                                   <div class="card-body">
-
+                                      <?php
+                                          require_once("health_center.php");
+                                      ?>
 
                                   </div>
                                 </div>
@@ -175,14 +248,25 @@
                       <!-- ******************************** Accordion card - Health Centre ******************************************* -->
 
                       <!-- ********************************* Accordion card - Bursary  *********************************************** -->
+                      <?php
+                            $division_id = 4;
+                            $clearance = new StudentClearance();
+                            $get_bursary_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                            $clearance_value = $get_bursary_clearance;
+
+                            $division_header_icon = "bursary_header_icon";
+                            include("../functions/Clearance_Status.php");
+
+                      ?>
                       <div class="card">
 
                                   <!-- Card header -->
                                   <div class="card-header" role="tab" id="heading">
                                         <!--Options-->
                                         <div class="dropdown float-left">
-                                          <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                          <button id='btn_bursary_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                           </button>
                                         </div>
 
@@ -200,8 +284,9 @@
                                   <div id="collapse81" class="collapse" role="tabpanel" aria-labelledby="heading"
                                     data-parent="#accordionEx78">
                                     <div class="card-body">
-
-
+                                          <?php
+                                                require_once("bursary.php");
+                                          ?>
 
                                     </div>
                               </div>
@@ -210,14 +295,25 @@
 
 
                         <!-- ********************************* Accordion card - Directorate of Sports  *********************************************** -->
+                        <?php
+                              $division_id = 5;
+                              $clearance = new StudentClearance();
+                              $get_sports_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                              $clearance_value = $get_sports_clearance;
+
+                              $division_header_icon = "sports_header_icon";
+                              include("../functions/Clearance_Status.php");
+
+                        ?>
                         <div class="card">
 
                                     <!-- Card header -->
                                     <div class="card-header" role="tab" id="heading92">
                                           <!--Options-->
                                           <div class="dropdown float-left">
-                                            <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                              aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                            <button id='btn_sports_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                              aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                             </button>
                                           </div>
 
@@ -235,7 +331,9 @@
                                     <div id="collapse82" class="collapse" role="tabpanel" aria-labelledby="heading92"
                                       data-parent="#accordionEx78">
                                       <div class="card-body">
-
+                                          <?php
+                                                require_once("sports.php");
+                                          ?>
 
 
                                       </div>
@@ -245,14 +343,25 @@
 
 
                           <!-- ********************************* Accordion card - Office of Advancement  *********************************************** -->
+                          <?php
+                                $division_id = 6;
+                                $clearance = new StudentClearance();
+                                $get_advancement_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                                $clearance_value = $get_advancement_clearance;
+
+                                $division_header_icon = "advancement_header_icon";
+                                include("../functions/Clearance_Status.php");
+
+                          ?>
                           <div class="card">
 
                                       <!-- Card header -->
                                       <div class="card-header" role="tab" id="heading84">
                                             <!--Options-->
                                             <div class="dropdown float-left">
-                                              <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                              <button id='btn_advancement_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                               </button>
                                             </div>
 
@@ -270,7 +379,9 @@
                                       <div id="collapse84" class="collapse" role="tabpanel" aria-labelledby="heading84"
                                         data-parent="#accordionEx78">
                                         <div class="card-body">
-
+                                              <?php
+                                                    require_once("advancement.php");
+                                              ?>
 
 
                                         </div>
@@ -304,7 +415,9 @@
                                         <div id="collapse85" class="collapse" role="tabpanel" aria-labelledby="heading85"
                                           data-parent="#accordionEx78">
                                           <div class="card-body">
-
+                                              <?php
+                                                    require_once("student_affairs.php");
+                                              ?>
 
 
                                           </div>
@@ -362,46 +475,17 @@
   </div><!-- end of container //-->
 
         <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
+        <!-- <input id='matric_no' type='hidden' value="15064" /> //-->
         <br/><br/>
         <?php
               //footer
               require_once("../includes/footer.php");
          ?>
 
-<script>
 
-$(document).ready(function(){
-
-  //--------------------------------- Department /Programme //------------------------
-      $("#btn_department_programme").on("click",function(){
-          var division_id = 1;
-          var matric_no = $("#matric_no").val();
-
-
-
-          //----------------- Ajax -------------------------------------
-          //------------- --------- Ajax call ------------------------------------
-          $.ajax({
-              url: '../async/server/clearance/checkin.php',
-              method: "POST",
-              data: {division_id: division_id, matric_no: matric_no},
-              cache: false,
-              beforeSend: function(){},
-              success: function(data){
-                  //$("#my_shopping_cart_pane").html(data);
-                  if (data==1){
-                      $("#department_programme_pane").html("<h2>Awaiting Response. Please check back for feedback</h2>");
-                  }else{
-                     alert("An error occurred. Please try again.");
-                  }
-              }
-          })
-          //------------------------ End of Ajax call ----------------------------
-          //----------------- End of Ajax -----------------------------
-      });
-  //---------------------------------- End of Department Programme ------------------------
-});
-
-
-
-</script>
+<script src="../async/client/department_programme/department_programme.js"></script>
+<script src="../async/client/library/library_checkin.js"></script>
+<script src="../async/client/health_center/health_center_checkin.js"></script>
+<script src="../async/client/bursary/bursary_checkin.js"></script>
+<script src="../async/client/sports/sports_checkin.js"></script>
+<script src="../async/client/advancement/advancement_checkin.js"></script>

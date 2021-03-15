@@ -14,7 +14,7 @@
               private $dob;
               private $grade_level;
               private $phone;
-              private $about;
+              private $about;            
               private $date_created;
               private $date_modified;
 

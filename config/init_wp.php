@@ -6,7 +6,7 @@
   require_once("../baseurl.php");
 
   // Authorization acces
-  //require_once("../includes/is_login_auth.php");
+  require_once("../includes/is_login_auth.php");
 
   // Functions - Include Directory
   require_once("../functions/FieldSanitizer.php");

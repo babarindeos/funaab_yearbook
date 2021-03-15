@@ -17,6 +17,7 @@
   require_once("interface/AcademicSessionInterface.php");
   require_once("interface/RegistrationInterface.php");
   require_once("interface/MailInterface.php");
+  require_once("interface/UserInterface.php");
 
   // Abstract - Abstract directory
   require_once("abstract/Database.php");
