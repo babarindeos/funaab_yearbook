@@ -84,7 +84,7 @@
           aria-haspopup="true" aria-expanded="false">  Messages
         </a>
         <div class="dropdown-menu dropdown-success" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="#"> <i class="far fa-envelope"></i> Inbox</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'staff/messaging/message_inbox.php'; ?>" > <i class="far fa-envelope"></i> Inbox</a>
           <a class="dropdown-item" href="#"> <i class="far fa-comments"></i> Send Message</a>
 
         </div>
@@ -114,7 +114,7 @@
     <li class="nav-item avatar dropdown notification-bar-item">
           <a class="nav-link dropdown-toggle dropdown-menu-right" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <img src="<?php echo $baseUrl."images/avatars/avatar-2.jpg";  ?>" class="img-fluid rounded-circle z-depth-0"
+            <img src="<?php echo $baseUrl."images/avatars/avatar_100.jpg";  ?>" class="img-fluid rounded-circle z-depth-0"
               alt="My Avatar" >
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left dropdown-success"
@@ -122,7 +122,7 @@
             <a class="dropdown-item" href="<?php echo $baseUrl.'staff/profile/my_profile.php?q='.mask($_SESSION['ulogin_userid']); ?>"> <i class="far fa-user"></i> Profile</a>
             <a class="dropdown-item" href="<?php echo $baseUrl.'staff/profile/change_password.php?q='.mask($_SESSION['ulogin_userid']); ?>"> <i class="fas fa-key"></i> Change Password</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="logout.php"> <i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a class="dropdown-item" href="<?php echo $baseUrl.'logout.php'; ?>"> <i class="fas fa-sign-out-alt"></i> Logout</a>
           </div>
     </li>
   </ul>

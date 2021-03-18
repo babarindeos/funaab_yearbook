@@ -5,9 +5,9 @@ error_reporting(E_ALL);
 
   class StudentClearance{
 
-      public function checkIn($division_id, $unit_id, $matric_no){
+      public function checkIn($current_active_session, $division_id, $unit_id, $matric_no){
 
-         $sqlQuery = "Insert into clearance_checkin set matric_no=:matric_no, division_id=:division_id,
+         $sqlQuery = "Insert into clearance_checkin set acad_session=:acad_session, matric_no=:matric_no, division_id=:division_id,
                       unit_id=:unit_id, date_created=:date_created, date_modified=:date_modified";
 
          $QueryExecutor = new PDO_QueryExecutor();
@@ -17,6 +17,7 @@ error_reporting(E_ALL);
          $date_modified = date('Y-m-d H:i:s');
 
          // bind Params
+         $stmt->bindParam(":acad_session", $current_active_session);
          $stmt->bindParam(":matric_no", $matric_no);
          $stmt->bindParam(":division_id", $division_id);
          $stmt->bindParam(":unit_id", $unit_id);
@@ -70,6 +71,46 @@ error_reporting(E_ALL);
           return $stmt;
       }
 
+      public function approved_clearance_in_unit($unit_id){
+
+          // SqlQuery
+          $sqlQuery = "Select cc.id as checkin_id, cc.matric_no, cc.division_id, cc.unit_id, cc.cleared, cc.reason, cc.remedy, cc.date_created,
+                      a.surname, a.firstname, a.othername, a.photo, a.gender, a.phone, a.email, a.emailFunaab, a.level, a.deptCode
+                      from clearance_checkin cc inner join applicants a on cc.matric_no=a.regNumber where cc.unit_id=:unit_id and cc.cleared='Y' ";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bindParam
+          $stmt->bindParam(":unit_id", $unit_id);
+
+          // execute
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+
+      public function declined_clearance_in_unit($unit_id){
+
+          // SqlQuery
+          $sqlQuery = "Select cc.id as checkin_id, cc.matric_no, cc.division_id, cc.unit_id, cc.cleared, cc.reason, cc.remedy, cc.date_created,
+                      a.surname, a.firstname, a.othername, a.photo, a.gender, a.phone, a.email, a.emailFunaab, a.level, a.deptCode
+                      from clearance_checkin cc inner join applicants a on cc.matric_no=a.regNumber where cc.unit_id=:unit_id and cc.cleared='N' ";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bindParam
+          $stmt->bindParam(":unit_id", $unit_id);
+
+          // execute
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+
       public function get_clearance_checkin_by_id($checkin_id){
           // SqlQuery
           $sqlQuery = "Select cc.id as checkin_id, cc.matric_no, cc.division_id, cc.unit_id, cc.cleared, cc.remark, cc.reason, cc.remedy, cc.date_created,
@@ -118,6 +159,8 @@ error_reporting(E_ALL);
           return $stmt;
       }
 
+
+      
 
 
   }

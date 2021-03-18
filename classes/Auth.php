@@ -73,11 +73,11 @@
       {
           $code = '';
           $i = 0;
-          $characters = "012345689abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!.%@*(){}[]$";
+          $characters = "012345689abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
           $character_length = strlen($characters);
 
            $randIndex = mt_rand(0, $character_length-1);
-           for($i=0; $i<100; $i++ ){
+           for($i=0; $i<50; $i++ ){
               $randIndex = mt_rand(0, $character_length-1);
               $code .= $characters[$randIndex];
            }

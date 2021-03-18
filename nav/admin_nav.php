@@ -1,7 +1,7 @@
 
 <!--Navbar -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark primary-color lighten-1">
-  <a class="navbar-brand" href="<?php echo $baseUrl.'cadmin/admin_dashboard.php'; ?>" id="logged-in-header-title">SIWES Office</a>
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark lighten-1" style="background-color:#006600;">
+  <a class="navbar-brand" href="<?php echo $baseUrl.'cadmin/admin_dashboard.php'; ?>" id="logged-in-header-title"><img width='15%' src="<?php echo $baseUrl; ?>assets/images/FUNAAB-Logosm.png" class="d-inline-block align-middle"> FUNAAB</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -16,21 +16,22 @@
       </li>
       <!-- end of Home Sample //-->
 
+      <li class="nav-item">
+        <a class="nav-link" id="navbarDropdownMenuLink-555"
+          aria-haspopup="true" aria-expanded="false"> Dashboard
+        </a>
+      </li>
+
       <!-- Office menu //-->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Office
+          aria-haspopup="true" aria-expanded="false"> Staff
         </a>
-        <!-- Comment out
+
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/cell/cells.php'; ?>" > <i class="fab fa-galactic-republic"></i> Cells</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-dot-circle"></i> Circles</a>
-          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/user/users.php'; ?>" > <i class="fas fa-users"></i> Users</a>
-          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/user/staff.php'; ?>" > <i class="fas fa-users"></i> Staff</a>
-          <a class="dropdown-item" href="#"> <i class="fas fa-users-cog"></i> Admin</a>
-          <a class="dropdown-item" href="#"> <i class="fas fa-list-ol"></i> Tasks</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-file-alt"></i> Memos</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-list-alt"></i> Notes</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/staff/create_staff.php'; ?>" > <i class="fas fa-user-plus"></i> Create Staff</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/staff/staff_records.php'; ?>" > <i class="fas fa-users"></i> Staff Records</a>
+
         </div>
       </li>
       <!-- end office menu //-->
@@ -38,7 +39,7 @@
       <!-- Project menu //-->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">  Students
+          aria-haspopup="true" aria-expanded="false"> Students
         </a>
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
           <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/student/payment.php'; ?>"> <i class="fas fa-suitcase"></i> Payment</a>
@@ -51,20 +52,7 @@
       </li>
       <!-- end project menu //-->
 
-      <!-- File menu //-->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Files
-        </a>
-        <!-- comment out
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="#"> <i class="far fa-file-alt"></i> Documents</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-images"></i> Images</a>
-          <a class="dropdown-item" href="#"> <i class="fas fa-headphones"></i> Audios</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-file-video"></i> Videos</a>
-        </div>
-      </li>
-      <!-- end file menu //-->
+
 
       <!-- Message menu //-->
       <li class="nav-item dropdown">
@@ -81,38 +69,9 @@
       </li>
       <!-- end message menu //-->
 
-      <!-- File menu //-->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Contacts
-        </a>
-        <!-- comment out
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="#"> <i class="fas fa-user-plus"></i> Add Contact</a>
-          <a class="dropdown-item" href="#"> <i class="fas fa-people-carry"></i> Co-workers</a>
-        </div>
-      </li>
-      <!-- end file menu //-->
 
-      <!-- File menu //-->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Assistants
-        </a>
-        <!-- comment out
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="#"> <i class="far fa-calendar"></i> Calendar</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-clock"></i> Scheduler</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-clock"></i> Reminder</a>
-        </div>
-      </li>
-      <!-- end file menu //-->
 
-      <!--
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      //-->
+
 
     </ul>
   </div>

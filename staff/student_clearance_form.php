@@ -88,6 +88,7 @@
       $surname = $student_clearance_info['surname'];
       $firstname = $student_clearance_info['firstname'];
       $othername = $student_clearance_info['othername'];
+      $student_photo = $student_clearance_info['photo'];
       $email = $student_clearance_info['email'];
       $emailFunaab = $student_clearance_info['emailFunaab'];
       $phone = $student_clearance_info['phone'];
@@ -160,16 +161,17 @@
                           <div class="text-center">
                               <?php
                                     $user_photo = '';
-                                    $user_photo = $baseUrl."images/avatars/avatar-2.jpg";
-                                    // if ($studentData['photo']==''){
-                                    //   $user_photo = $baseUrl."images/avatars/avatar-2.jpg";
-                                    // }else{
-                                    //   $user_photo = substr($studentData['photo'],1);
-                                    //   $user_photo = "https://portal.unaab.edu.ng{$user_photo}";
-                                    // }
+
+                                    if ($student_photo==''){
+                                      $user_photo = $baseUrl."images/avatars/avatar_100.jpg";
+                                    }else{
+                                      //$user_photo = substr($student_photo,1);
+                                      $user_photo = $student_photo;
+                                      $user_photo = "https://portal.unaab.edu.ng{$user_photo}";
+                                    }
 
 
-                                    echo "<div class='avatar mx-auto white mt-1 mb-2'><img src='{$user_photo}' alt='avatar mx-auto white' class='rounded-circle img-fluid border'></div> ";
+                                    echo "<div class='avatar mx-auto white mt-1 mb-2'><img width='140px' src='{$user_photo}' alt='avatar mx-auto white' class='rounded-circle img-fluid border'></div> ";
                                ?>
 
 
@@ -261,7 +263,7 @@
                                                     <!--************* end of Remedy *********************************//-->
 
 
-                                                    <div id="div_submit" class='mt-3' style='display:none;'>
+                                                    <div id="div_submit" class='mt-3' <?php echo $btnSubmit_style; ?>  >
                                                           <button type="submit" name="btnSubmit" class="btn btn-primary btn-rounded btn-sm">Submit</button>
                                                     </div>
                                       </div>

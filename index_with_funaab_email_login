@@ -32,15 +32,13 @@
 
       $err_flag = 0;
       $err_msg = null;
-
       if (isset($_POST['formLogin'])){
 
           //require_once("functions/Spinner_small_blue.php");
           $login_matriculation_no = FieldSanitizer::inClean($_POST['login_Matriculation_Number']);
           $regNumber = $login_matriculation_no;
 
-          $login_portal_password = trim($_POST['portal_password']);
-
+          $login_funaab_email = strtolower(trim($_POST['funaabEmail']));
 
           $acadaSession = new AcademicSession();
           $get_acada_session = $acadaSession->get_active_session();
@@ -62,19 +60,11 @@
               //print_r($json);
               //exit;
 
-              //check if portal password is current
-              $portal_passwordHash = trim($json->PasswordHash);
-              $form_login_portal_password = trim(md5($login_portal_password));
-
-
-              if ($form_login_portal_password==$portal_passwordHash){
-                  $err_msg = processStudentData($regNumber, $json);
-
-                  if ($err_msg!=''){
-                    $err_flag = 1;
-                  }
+              //check if matric no and user official email matches
+              $funaabEmail = strtolower(trim($json->OfficialEmail));
+              if ($login_funaab_email==$funaabEmail){
+                  processStudentData($regNumber, $json);
               }else{
-
                   $err_flag = 1;
                   $err_msg = "Invalid Sign-in Credentials";
 
@@ -137,8 +127,8 @@
 
                                       <!-- FUNAAB email //-->
                                       <div class="form-group col-md-12">
-                                          <label for="portal_password" disabled>Portal Password </label>
-                                          <input type='password' class='form-control' id='portal_password' name="portal_password">
+                                          <label for="funaabemail" disabled>FUNAAB email </label>
+                                          <input type='text' class='form-control' id='funaabEmail' name="funaabEmail">
                                       </div>
                                       <!-- end of FUNAAB email //-->
 

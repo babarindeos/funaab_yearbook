@@ -28,10 +28,10 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
-      <!-- Home Sample
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home
-          <span class="sr-only">(current)</span>
+      <!-- Home Sample //-->
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo $baseUrl.'student/clearance_form.php'; ?>">Clearance form
+          <!-- <span class="sr-only">(current)</span> //-->
         </a>
       </li>
       <!-- end of Home Sample //-->

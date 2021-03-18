@@ -1,6 +1,10 @@
 <?php
+
 //*****************************************  FUNAAB to Process Student Records *************************************************
    function processStudentData($regNumber, $json){
+     $err_flag = 0;
+     $err_msg = null;
+
      $studentStatus=$json->PaymentStatus;
      $surname=htmlentities(strtoupper(trim($json->Surname)), ENT_QUOTES);
      $firstname=htmlentities(ucfirst(strtolower(trim($json->Firstname))), ENT_QUOTES);
@@ -37,13 +41,13 @@
         $applicant = new Applicant();
 
        if ($studentStatus=="PAID"){
-             echo 'PAID';
+             //echo 'PAID';
              $getApplicant = $applicant->getApplicant($regNumber);
 
              // check if record is not found and insert into applicants
              if ($getApplicant->rowCount()==0){
                        // create applicant record for the user
-                       echo "Applicant is not created";
+                       //echo "Applicant is not created";
 
                        $applicantData = array("regNumber"=>$regNumber,"surname"=>$surname,"firstname"=>$firstname,"othername"=>$othername,"phone"=>$phone,
                                         "email"=>$email,"funaabEmail"=>$funaabEmail,"photo"=>$photo,"level"=>$level,"acadaLevel"=>$level,"gender"=>$gender,"deptCode"=>$deptCode,"collegeCode"=>$collegeCode,
@@ -57,7 +61,7 @@
                        if ($new_applicant->rowCount()){
                            //session_start();
 
-                           $_SESSION['app_login'] = '2021';
+                           $_SESSION['app_login'] = 'student';
                            $_SESSION['ulogin_state'] = $regNumber;
                            $_SESSION['regNumber'] = $regNumber;
                            $_SESSION['studentData'] = $dataArray;
@@ -70,7 +74,7 @@
 
                        }else{
                             // creating new applicant failed
-                            echo "Applicant Saving failed";
+                            //echo "Applicant Saving failed";
 
                             $err_flag = 1;
                             $err_msg .= 'Record not saved. Please try again.';
@@ -79,7 +83,7 @@
                      // applicant had already been created...then redirect to the prepayment page
                          //session_start();
 
-                         $_SESSION['app_login'] = '2021';
+                         $_SESSION['app_login'] = 'student';
                          $_SESSION['ulogin_state'] = $regNumber;
                          $_SESSION['regNumber'] = $regNumber;
                          $_SESSION['studentData'] = $dataArray;
@@ -93,8 +97,10 @@
 
          }else{
                          // School fees status not PAID
+                         //echo "School fees not PAID";
+
                          $err_flag = 1;
-                         $err_msg .= "School Fees Payment Status: {$studentStatus}";
+                         $err_msg .= "School Fees Payment Status: Not PAID";
 
          }
 
@@ -102,7 +108,7 @@
      }
      // end of verification of student record
 
-
+                        return $err_msg;
    } //end of function to process student data
 
 

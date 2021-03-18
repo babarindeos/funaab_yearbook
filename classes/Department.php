@@ -19,6 +19,19 @@
       }
 
 
+      public function get_all_units_dept_code(){
+          //$sqlQuery
+          $sqlQuery = "Select id, name from units order by id";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+
   }
 
 

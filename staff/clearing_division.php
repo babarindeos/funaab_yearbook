@@ -67,12 +67,22 @@
                             aria-selected="true">Awaiting Clearance (<?php echo $awaiting_clearance->rowCount(); ?>)</a>
                         </li>
                         <li class="nav-item">
+                          <?php
+                                $clearance = new StudentClearance();
+                                $approved_clearance = $clearance->approved_clearance_in_unit($_SESSION['unit_id']);
+
+                          ?>
                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                            aria-selected="false">Clearance Approved</a>
+                            aria-selected="false">Clearance Approved (<?php echo $approved_clearance->rowCount(); ?>)</a>
                         </li>
                         <li class="nav-item">
+                          <?php
+                                $clearance = new StudentClearance();
+                                $declined_clearance = $clearance->declined_clearance_in_unit($_SESSION['unit_id']);
+
+                          ?>
                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-                            aria-selected="false">Clearance Declined</a>
+                            aria-selected="false">Clearance Declined (<?php echo $declined_clearance->rowCount(); ?>)</a>
                         </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -86,9 +96,15 @@
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                               <!-- Clearance Approved //-->
+                              <?php
+                                  require_once("approved_clearance.php");
+                              ?>
                         </div>
                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                               <!-- Clearance Declined //-->
+                              <?php
+                                  require_once("declined_clearance.php");
+                              ?>
 
                         </div>
                       </div>

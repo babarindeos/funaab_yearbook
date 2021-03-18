@@ -128,6 +128,51 @@
           return $stmt;
       }
 
+
+      public function create_staff($fields){
+
+
+          $file_no = $fields['file_no'];
+          $names = $fields['full_name'];
+          $funaab_email = $fields['funaab_email'];
+          $phone = $fields['phone'];
+          $unit_id = $fields['unit_id'];
+          $dept_code = $fields['dept_code'];
+          $dept_name = $fields['dept_name'];
+          $password = $fields['password'];
+          $verification_code = $fields['verification_code'];
+
+          $date_created = date('Y-m-d H:i:s');
+          $date_modified = date('Y-m-d H:i:s');
+
+          //$sqlQuery
+          $sqlQuery = "Insert into staff set file_no=:file_no, names=:names, email=:email, phone=:phone, unit_id=:unit_id,
+                      dept_code=:dept_code, dept_name=:dept_name, password=:password, verification_code=:verification_code,
+                      date_created=:date_created, date_modified=:date_modified";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt =  $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          // bind Params
+          $stmt->bindParam(":file_no", $file_no);
+          $stmt->bindParam(":names", $names);
+          $stmt->bindParam(":email", $funaab_email);
+          $stmt->bindParam(":phone", $phone);
+          $stmt->bindParam(":unit_id", $unit_id);
+          $stmt->bindParam(":dept_code", $dept_code);
+          $stmt->bindParam(":dept_name", $dept_name);
+          $stmt->bindParam(":password", $password);
+          $stmt->bindParam(":verification_code", $verification_code);
+          $stmt->bindParam(":date_created", $date_created);
+          $stmt->bindParam(":date_modified", $date_modified);
+
+          //is_executable
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+
   }
 
 

@@ -6,7 +6,7 @@ error_reporting(E_ALL);
     session_start();
     session_destroy();
     session_start();
-    $page_title = "Staff Sign-in";
+    $page_title = "Admin Sign-in";
     // Core
     require_once("core/config.php");
     // Header
@@ -23,7 +23,7 @@ error_reporting(E_ALL);
        {
             $_SESSION['ulogin_state'] = 200;
             if (headers_sent()){
-                die("<br/><br/><div class='mt-5 text-center'><big><strong>You are signed-in.</strong><br/> If not re-directed. Please click on this link: <a href='cadmin/admin_dashboard.php'>SIWES Online Office.</a></big></div>");
+                die("<br/><br/><div class='mt-5 text-center'><big><strong>You are signed-in.</strong><br/> If not re-directed. Please click on this link: <a href='cadmin/admin_dashboard.php'>University Online Clearance Platform.</a></big></div>");
             }else{
                 header("location: cadmin/admin_dashboard.php");
             }
@@ -41,7 +41,7 @@ error_reporting(E_ALL);
 
        <!-- top pane //-->
        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
-           <h3>SIWES Office</h3>
+           <h3>Clearance Division Online Office</h3>
        </div>
        <!-- end of top pane //-->
 
@@ -82,19 +82,20 @@ error_reporting(E_ALL);
                              <label for="loginPassword">Password</label>
                            </div>
 
-                           <div class="d-flex justify-content-around">
+
+                           <!-- <div class="d-flex justify-content-around">
                              <div>
-                               <!-- Remember me -->
+                               <!-- Remember me
                                <div class="form-check">
                                  <input type="checkbox" class="form-check-input" id="loginFormRemember">
                                  <label class="form-check-label" for="loginFormRemember">Remember me</label>
                                </div>
                              </div>
                              <div>
-                               <!-- Forgot password -->
+                               <!-- Forgot password
                                <a href="">Forgot password?</a>
                              </div>
-                           </div>
+                           </div> //-->
 
                            <!-- Sign in button -->
                            <button name="formLogin" class="btn btn-outline-success btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign in</button>

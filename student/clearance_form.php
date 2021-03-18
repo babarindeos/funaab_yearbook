@@ -3,12 +3,10 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
-  session_start();
+  //session_start();
 
 
-    if (!(isset($_SESSION['app_login']) && $_SESSION['app_login'] != '')) {
-        header ("Location: ../index.php");
-    }
+
 
 
 
@@ -16,6 +14,10 @@
 
       // Core
       require_once("../core/wp_config.php");
+
+      if (!(isset($_SESSION['app_login']) && $_SESSION['app_login'] != '' && $_SESSION['app_login'] == 'student')) {
+          header ("Location: ../index.php");
+      }
 
       // classes
       require_once("../classes/StudentClearance.php");
@@ -103,11 +105,6 @@
 
                           $division_header_icon = "dept_header_icon";
                           include("../functions/Clearance_Status.php");
-
-
-
-
-
 
                     ?>
                     <div class="card">
