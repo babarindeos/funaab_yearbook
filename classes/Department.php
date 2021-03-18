@@ -31,6 +31,21 @@
           return $stmt;
       }
 
+      public function get_department_unit_id($deptCode){
+          // $sqlQuery
+          $sqlQuery = "Select id, name from units where name=:deptCode";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->bindParam(":deptCode", $deptCode);
+
+          $stmt->execute();
+
+          return $stmt;
+
+      }
+
 
   }
 

@@ -167,6 +167,7 @@
                                     }else{
                                       //$user_photo = substr($student_photo,1);
                                       $user_photo = $student_photo;
+                                      $user_photo = substr($user_photo,1);
                                       $user_photo = "https://portal.unaab.edu.ng{$user_photo}";
                                     }
 

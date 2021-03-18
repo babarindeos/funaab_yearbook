@@ -6,7 +6,12 @@
     $department_name = $get_department['dept_name'];
 
 
+    // Get unit_id for the student's department
     $get_dept_unit_id = $department->get_department_unit_id($deptCode);
+    $get_dept_unit_id = $get_dept_unit_id->fetch(PDO::FETCH_ASSOC);
+    $my_dept_unit_id = $get_dept_unit_id['id'];
+
+
 
 ?>
 

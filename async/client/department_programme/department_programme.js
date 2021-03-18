@@ -10,9 +10,10 @@ $(document).ready(function(){
 
 
           var division_id = 1;
-          var unit_id = 15;
+          var unit_id = $("#my_dept_unit_id").val();
           var matric_no = $("#matric_no").val();
 
+          
 
 
 
