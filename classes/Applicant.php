@@ -30,6 +30,7 @@ class Applicant implements ApplicantInterface{
       $surname = $applicantData['surname'];
       $firstname = $applicantData['firstname'];
       $othername = $applicantData['othername'];
+      $photo = $applicantData['photo'];
       $phone = $applicantData['phone'];
       $email = $applicantData['email'];
       $funaabEmail = $applicantData['funaabEmail'];
@@ -44,7 +45,7 @@ class Applicant implements ApplicantInterface{
       //$dateCreated = now();
       $dateCreated = date('Y-m-d H:i:s');
 
-      $sqlQuery = "Insert into applicants set regNumber=:regNumber, surname=:surname, firstname=:firstname, othername=:othername, phone=:phone,
+      $sqlQuery = "Insert into applicants set regNumber=:regNumber, surname=:surname, firstname=:firstname, othername=:othername, photo=:photo, phone=:phone,
                   email=:email, emailFunaab=:emailFunaab, level=:level, acadaLevel=:acadaLevel, gender=:gender, deptCode=:deptCode, collegeCode=:collegeCode, CGPA=:CGPA,
                   minDuration=:minDuration, dateCreated=:dateCreated";
 
@@ -57,6 +58,7 @@ class Applicant implements ApplicantInterface{
       $stmt->bindParam(":surname", $surname);
       $stmt->bindParam(":firstname", $firstname);
       $stmt->bindParam(":othername", $othername);
+      $stmt->bindParam(":photo", $photo);
       $stmt->bindParam(":phone", $phone);
       $stmt->bindParam(":email", $email);
       $stmt->bindParam(":emailFunaab", $funaabEmail);

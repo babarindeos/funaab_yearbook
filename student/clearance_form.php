@@ -472,6 +472,7 @@
   </div><!-- end of container //-->
 
         <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
+        <input id="my_dept_unit_id" type="text" value="<?php echo $my_dept_unit_id; ?>" />
         <!-- <input id='matric_no' type='hidden' value="15064" /> //-->
         <br/><br/>
         <?php

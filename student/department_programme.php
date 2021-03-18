@@ -5,6 +5,9 @@
     $get_department = $get_department->fetch(PDO::FETCH_ASSOC);
     $department_name = $get_department['dept_name'];
 
+
+    $get_dept_unit_id = $department->get_department_unit_id($deptCode);
+
 ?>
 
 
