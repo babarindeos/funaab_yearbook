@@ -1,6 +1,6 @@
 <?php
 
-  require_once('PDODriver.php');
+  ('PDODriver.php');
   class PDO_QueryExecutor{
 
       private static $host = '127.0.0.1';
@@ -10,14 +10,21 @@
 
       public static function customQuery(){
           try{
+              $pdo = null;
+              $connection = null;
+
               $pdo = new PDODriver(self::$host, self::$uid, self::$password, self::$db);
               $connection = $pdo->db_connect();
 
               return $connection;
 
+
           }catch(Exception $e){
               echo 'Message'.$e->getMessage();
           }
+
+
+
       }
 
 

@@ -2,9 +2,11 @@
 //Parameters
 
 //Parameters for building Invoice Number
-$idPrefix = "FUN/SIW";
+$idPrefix = "FUN/CLS";
 //$collectionSession = date("Y") . (date('y')+1); //Application Academic Session
-$acadaSession = "2019/2020";
+$acadaSession = "2018/2019";
+
+
 $resultAcadaSession = "2017/2018"; //Session to use for HighFlyers
 $collectionSession = "201920";
 $fpyAcadaSession = "2018/2019";
@@ -18,7 +20,7 @@ $returningPattern = '#^20[0-9]{6}$#';
 $pgPattern = '#^PG/[0-9]{2}/[1|2]/[0-9]{4}$#';
 //$pgPattern = '#^(PG/[0-9]{2}/[0-9]{4})|(PG/[0-9]{2}/[1|2]/[0-9]{4})$#';
 
-$collectionAPP = "APP"; //Collection Purpose (cellection1 = APP (Application)
+$collectionAPP = "SAO"; //Collection Purpose (cellection1 = APP (Application)
 //$collection2 = "$hostelCode"; //(Hostel Initials set in application)
 $batch1 = "1";
 $batch2 = "2";

@@ -41,6 +41,27 @@ class Payment implements PaymentInterface{
         return $stmt;
     }
 
+
+
+    public function getInitialPayData_by_matric_no($regNumber){
+        // $sqlQuery
+        $sqlQuery = "SELECT surname, firstname, othername, phone, email, transactionID, referenceNo, collectionPrefix, amount, commission, dateCreated,
+               registered, confirmed, filed FROM initialpaydata WHERE filed = 0 AND custID =:regNumber";
+
+        // pdo Object
+        $QueryExecutor = new PDO_QueryExecutor();
+        $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+        //bind parameters
+        $stmt->bindParam(":regNumber", $regNumber);
+
+        // execute PDO
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+
 //TO DO: Add ClientIp
     public function create_new_invoice($invoiceData){
         $regNumber = $invoiceData['regNumber'];

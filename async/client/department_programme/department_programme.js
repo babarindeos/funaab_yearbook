@@ -4,7 +4,7 @@ $(document).ready(function(){
       $("#btn_department_programme").on("click",function(){
 
           // disable and hide button for further Click
-          $(this).prop("disable", true);
+          $(this).prop("disabled", true);
           $(this).hide();
 
 
@@ -13,7 +13,7 @@ $(document).ready(function(){
           var unit_id = $("#my_dept_unit_id").val();
           var matric_no = $("#matric_no").val();
 
-          
+
 
 
 

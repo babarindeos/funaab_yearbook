@@ -55,6 +55,20 @@ class Message{
         return $stmt;
     }
 
+    public function get_unit_messages($my_unit_id){
+
+
+        $sqlQuery = "SELECT id, chat_id, sender, count(id) as messages, date_created FROM messages
+                      group by chat_id having chat_id like '".$my_unit_id."_%' order by id desc";
+
+        $QueryExecutor = new PDO_QueryExecutor();
+        $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 
 

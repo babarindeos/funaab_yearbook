@@ -122,6 +122,20 @@
 
 
 
+      // ------------- Get Student Health Center No ---------------------------
+      $health_center_no = '';
+
+      $applicant = new Applicant();
+      $get_health_center_no = $applicant->get_applicant_health_center_number($matric_no);
+      $get_health_center_no = $get_health_center_no->fetch(PDO::FETCH_ASSOC);
+
+
+      if ($get_health_center_no!=''){
+          $health_center_no = $get_health_center_no['HCN'];
+      }
+
+      //----------------End of Get Student Health Center No -----------------
+
 ?>
 
 
@@ -144,7 +158,8 @@
           <!-- Salutation //-->
           <?php
 
-              echo "<div class='mb-2'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class='mb-0'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class='mb-4'><strong>Clearance Unit: </strong>".$_SESSION['unit_name']."</div>";
 
           ?>
         </div>
@@ -184,6 +199,7 @@
                                 <table class="table table-striped">
                                   <tbody>
                                     <tr><td width='30%'><strong>Matric No.</strong></td><td><?php echo $matric_no; ?></td></tr>
+                                    <tr><td width='30%'><strong>Health Center No.</strong></td><td><?php echo $health_center_no; ?></td></tr>
                                     <tr><td width='30%'><strong>Surname</strong></td><td><?php echo $surname; ?></td></tr>
                                     <tr><td width='20%'><strong>Firstname</strong></td><td><?php echo $firstname; ?></td></tr>
                                     <tr><td width='20%'><strong>Othername</strong></td><td><?php echo $othername; ?></td></tr>
@@ -271,8 +287,43 @@
 
 
                               </form>
+
+
+
+                              <!-- upload status of online payment for students affairs //-->
+                              <div class='mt-4'>
+                                  <?php
+
+                                         if ($_SESSION['unit_id']=='45'){
+                                              require_once("student_affairs_yearbook_online_payment.php");
+                                              require_once("uploaded_yearbook_receipts.php");
+                                         }
+
+                                         if ($_SESSION['unit_id']=='48'){
+                                              require_once('uploaded_exams_records_receipts.php');
+                                         }
+
+                                         if ($_SESSION['unit_id']=='49'){
+                                              require_once("uploaded_alumni_receipts.php");
+                                         }
+
+                                         if ($_SESSION['unit_id']=='42'){
+                                              require_once("records_of_school_fees_payment.php");
+                                         }
+                                  ?>
+                              </div>
+                              <!-- end of upload of online payment for students affairs //-->
+
+
+
+
                       </div>
                       <!-- end of clearance //-->
+
+
+
+
+
 
 
 

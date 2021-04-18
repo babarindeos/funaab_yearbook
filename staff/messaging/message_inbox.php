@@ -7,7 +7,7 @@
 
 
 
-      $page_title = "Clearance for Students";
+      $page_title = "Message Inbox";
 
       // Config files
       require_once("../../config/step2/init_wp.php");
@@ -26,6 +26,11 @@
       //require_once("../includes/ws_parameters.php");
 
       $my_unit_id = $_SESSION['unit_id'];
+
+      $message = new Message();
+      $unit_messages = $message->get_unit_messages($my_unit_id);
+
+
 
 
 ?>
@@ -50,15 +55,43 @@
           <!-- Salutation //-->
           <?php
 
-              echo "<div class='mb-2'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class='mb-0'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class='mb-4'><strong>Clearance Unit: </strong>".$_SESSION['unit_name']."</div>";
+
 
           ?>
         </div>
         <!-- Clearance form //-->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-4">
             <?php
-                  
+                echo "<h4>Conversations ({$unit_messages->rowCount()})</h4>";
 
+                echo "<table class='table table-striped'>";
+                    echo "<thead>";
+                        echo "<tr>";
+                            echo "<th scope='col'>#</th>";
+                            echo "<th scope='col'>Sender</th>";
+                            echo "<th scope='col'>Messages</th>";
+                        echo "</tr>";
+                    echo "</thead>";
+                    echo "<tbody>";
+
+                    $counter = 1;
+
+                    while($row = $unit_messages->fetch(PDO::FETCH_ASSOC)){
+
+                            echo "<tr>";
+                                echo "<td>{$counter}.</td>";
+                                echo "<td><a class='text-info' title='See Student Profile' href='#  '>{$row['sender']}</a></td>";
+                                echo "<td><a class='text-info' title='Open Conversation to See Messages' href='message.php?q=".mask($row['chat_id'])."'>{$row['messages']} messages</a></td>";
+                            echo "</tr>";
+
+                            $counter++;
+
+                    }
+
+                    echo "</tbody>";
+                echo "</table>";
 
 
             ?>

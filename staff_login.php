@@ -45,14 +45,16 @@ error_reporting(E_ALL);
                 $_SESSION['email'] = $staff_info['email'];
                 $_SESSION['phone'] = $staff_info['phone'];
                 $_SESSION['unit_id'] = $staff_info['unit_id'];
+                $_SESSION['unit_code'] = $staff_info['dept_code'];
+                $_SESSION['unit_name'] = $staff_info['dept_name'];
                 $_SESSIOn['verification_code'] = $staff_info['verification_code'];
 
                 //$_SESSION['staffData'] = $dataArray;
 
                  if (headers_sent()){
-                     die("<br/><br/><div class='mt-5 text-center'><big><strong>You are Sign-in</strong><br/>If not re-directed. Please click on this link: <a href='staff/clearing_division.php'>Online Clearance Office</a></big></div>");
+                     die("<br/><br/><div class='mt-5 text-center'><big><strong>You are Sign-in</strong><br/>If not re-directed. Please click on this link: <a href='staff/unit_dashboard.php'>Online Clearance Office</a></big></div>");
                  }else{
-                     header("location:staff/clearing_division.php");
+                     header("location:staff/unit_dashboard.php");
                  }
 
           }else{

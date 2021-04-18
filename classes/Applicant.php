@@ -8,7 +8,7 @@ class Applicant implements ApplicantInterface{
    public function getApplicant($regNumber){
 
       // $sqlQuery
-      $sqlQuery = "SELECT regNumber, surname, firstname, othername, photo, gender, phone, email, level, majorCode, deptCode,
+      $sqlQuery = "SELECT regNumber, surname, firstname, othername, photo, gender, phone, email, emailFunaab, level, majorCode, deptCode,
                    collegeCode, CGPA, acadaLevel, programme, dateCreated FROM applicants WHERE regNumber=:regNumber";
 
       // pdo object
@@ -91,6 +91,39 @@ class Applicant implements ApplicantInterface{
       $stmt->execute();
 
       return $stmt;
+   }
+
+
+   public function get_all_applicants(){
+      //SqlQuery
+      $sqlQuery = "Select applicantID, regNumber, surname, firstname, othername, photo, gender, phone, email, emailFunaab, level,
+                   majorCode, deptCode, collegeCode, dateCreated from applicants";
+
+      // pdo Object
+      $QueryExecutor = new PDO_QueryExecutor();
+      $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+      $stmt->execute();
+
+      return $stmt;
+
+   }
+
+
+   public function get_applicant_health_center_number($matric){
+      // sqlQuery
+      $sqlQuery = "Select matric, HCN, Surname, Firstname, Middlename, Level, MajorCode, FacultyCode, Phone from
+                   idcard where matric=:matric";
+
+     // pdo Object
+     $QueryExecutor = new PDO_QueryExecutor();
+     $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+     $stmt->bindParam(":matric", $matric);
+
+     $stmt->execute();
+
+     return $stmt;
    }
 
 

@@ -11,7 +11,7 @@ if (!isset($_GET['refNumber'])) {
 }
 
 
-$page_title = 'WebPay - Pay SIWES Dues & Logbook Payment Online';
+$page_title = 'WebPay - Pay for FUNAAB YearBook Online';
 
 // Initialised
 $message = "";  //Error Message
@@ -59,8 +59,8 @@ include_once 'includes/funaabWS.php';
 
 
 			<div class="col-xs-12 mt-3 mb-5">
-				<h3>Pay SIWES Dues & Logbook Charges Online</h3>
-				<p class="lead">SIWES Registration</p>
+				<h3>Pay FUNAAB YearBook Online</h3>
+				<p class="lead">Students Affairs Office</p>
 
 					<iframe src="<?php echo "http://paymentgateway.unaab.edu.ng/Remita/ProcessPayment.aspx?RefNo=$referenceNo"; ?>" name = "myIframe"  height="520px" width="100%" ></iframe>
 

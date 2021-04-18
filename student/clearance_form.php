@@ -15,9 +15,12 @@
       // Core
       require_once("../core/wp_config.php");
 
+
+      // authentication
       if (!(isset($_SESSION['app_login']) && $_SESSION['app_login'] != '' && $_SESSION['app_login'] == 'student')) {
           header ("Location: ../index.php");
       }
+
 
       // classes
       require_once("../classes/StudentClearance.php");
@@ -28,6 +31,7 @@
 
       // Header
       //require_once("includes/header.php");
+
 
       // Navigation
 
@@ -56,7 +60,7 @@
 
 //----------------------- End of Student Data --------------------------------------------------------
 
-       // matric_no = "15064";
+
 
 
 
@@ -387,14 +391,25 @@
                             <!--********************************** Accordion card - Office of Advancement ****************************** -->
 
                             <!-- ********************************* Accordion card - Student Affairs Office  *********************************************** -->
+                            <?php
+                                  $division_id = 7;
+                                  $clearance = new StudentClearance();
+                                  $get_students_affairs_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                                  $clearance_value = $get_students_affairs_clearance;
+
+                                  $division_header_icon = "students_affairs_header_icon";
+                                  include("../functions/Clearance_Status.php");
+
+                            ?>
                             <div class="card">
 
                                         <!-- Card header -->
                                         <div class="card-header" role="tab" id="heading85">
                                               <!--Options-->
                                               <div class="dropdown float-left">
-                                                <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                                  aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                                <button id="btn_students_affairs_header" title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                                  aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                                 </button>
                                               </div>
 
@@ -402,7 +417,7 @@
                                               <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse85" aria-expanded="true"
                                                 aria-controls="collapse85">
                                                 <h5 class="mt-1 mb-0">
-                                                  <span>Student Affair Office</span>
+                                                  <span>Students Affairs Office</span>
                                                   <i class="fas fa-angle-down rotate-icon"></i>
                                                 </h5>
                                               </a>
@@ -413,7 +428,7 @@
                                           data-parent="#accordionEx78">
                                           <div class="card-body">
                                               <?php
-                                                    require_once("student_affairs.php");
+                                                    require_once("students_affairs.php");
                                               ?>
 
 
@@ -423,14 +438,25 @@
                               <!--********************************** Accordion card - Student Affairs Office ****************************** -->
 
                               <!-- ********************************* Accordion card - Alumni  *********************************************** -->
+                              <?php
+                                    $division_id = 8;
+                                    $clearance = new StudentClearance();
+                                    $get_alumni_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                                    $clearance_value = $get_alumni_clearance;
+
+                                    $division_header_icon = "alumni_header_icon";
+                                    include("../functions/Clearance_Status.php");
+
+                              ?>
                               <div class="card">
 
                                           <!-- Card header -->
                                           <div class="card-header" role="tab" id="heading86">
                                                 <!--Options-->
                                                 <div class="dropdown float-left">
-                                                  <button class="btn btn-info btn-sm m-0 mr-3 p-2" type="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false"><i class="fas fa-question"></i>
+                                                  <button id="btn_alumni_header" title="<?php echo $title; ?>"  class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
                                                   </button>
                                                 </div>
 
@@ -448,13 +474,64 @@
                                           <div id="collapse86" class="collapse" role="tabpanel" aria-labelledby="heading86"
                                             data-parent="#accordionEx78">
                                             <div class="card-body">
-
-
+                                              <?php
+                                                    require_once("alumni.php");
+                                              ?>
 
                                             </div>
                                       </div>
                                 </div>
                                 <!--********************************** Accordion card - Alumni ****************************** -->
+
+
+
+                                <!-- ********************************* Accordion card - Exams and Records  *********************************************** -->
+                                <?php
+                                      $division_id = 9;
+                                      $clearance = new StudentClearance();
+                                      $get_exams_and_records_clearance = $clearance->get_checkin_status($division_id, $matric_no);
+
+                                      $clearance_value = $get_exams_and_records_clearance;
+
+                                      $division_header_icon = "exams_and_records_header_icon";
+                                      include("../functions/Clearance_Status.php");
+
+                                ?>
+                                <div class="card">
+
+                                            <!-- Card header -->
+                                            <div class="card-header" role="tab" id="heading87">
+                                                  <!--Options-->
+                                                  <div class="dropdown float-left">
+                                                    <button id="btn_exams_and_records_header" title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
+                                                      aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
+                                                    </button>
+                                                  </div>
+
+                                                  <!-- Heading -->
+                                                  <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse87" aria-expanded="true"
+                                                    aria-controls="collapse87">
+                                                    <h5 class="mt-1 mb-0">
+                                                      <span>Exams and Records Office</span>
+                                                      <i class="fas fa-angle-down rotate-icon"></i>
+                                                    </h5>
+                                                  </a>
+                                            </div><!-- end of Card header //-->
+
+                                            <!-- Card body -->
+                                            <div id="collapse87" class="collapse" role="tabpanel" aria-labelledby="heading87"
+                                              data-parent="#accordionEx78">
+                                              <div class="card-body">
+
+                                                    <?php
+                                                          require_once("exams_and_records.php");
+                                                    ?>
+
+
+                                              </div>
+                                        </div>
+                                  </div>
+                                  <!--********************************** Accordion card - Exams and Records ****************************** -->
 
 
 
@@ -472,9 +549,16 @@
   </div><!-- end of container //-->
 
         <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
-        <input id="my_dept_unit_id" type="text" value="<?php echo $my_dept_unit_id; ?>" />
+        <input id="my_dept_unit_id" type="hidden" value="<?php echo $my_dept_unit_id; ?>" />
+        <input id="yearbook_uploaded_file" type="hidden" value="<?php echo $_SESSION['yearbook_receipt_file']; ?>" />
+
+        <input id="alumni_uploaded_file" type="hidden" value="<?php echo $_SESSION['alumni_receipt_file']; ?>" />
+
+        <input id="e-records_certificate_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Certificate']; ?>" />
+        <input id="e-records_statement_of_result_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Statement of Result']; ?>" />
+        <input id="e-records_academic_gown_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Academic Gown']; ?> " />
         <!-- <input id='matric_no' type='hidden' value="15064" /> //-->
-        <br/><br/>
+        <br/><br/><br/>
         <?php
               //footer
               require_once("../includes/footer.php");
@@ -487,3 +571,12 @@
 <script src="../async/client/bursary/bursary_checkin.js"></script>
 <script src="../async/client/sports/sports_checkin.js"></script>
 <script src="../async/client/advancement/advancement_checkin.js"></script>
+<script src="../async/client/students_affairs/students_affairs_checkin.js"></script>
+<script src="../async/client/students_affairs/upload_yearbook.js"></script>
+<script src="../async/client/students_affairs/initiate_payment.js"></script>
+<script src="../async/client/exams_and_records/upload_receipts.js"></script>
+<script src="../async/client/exams_and_records/save_uploaded_file_info.js"></script>
+<script src="../async/client/exams_and_records/exams_and_records_checkin.js"></script>
+
+<script src="../async/client/alumni/upload_alumni_payment_receipt.js"></script>
+<script src="../async/client/alumni/alumni_checkin.js"></script>

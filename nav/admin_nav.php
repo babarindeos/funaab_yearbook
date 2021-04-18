@@ -18,7 +18,7 @@
 
       <li class="nav-item">
         <a class="nav-link" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false"> Dashboard
+          aria-haspopup="true" aria-expanded="false" href="<?php echo $baseUrl.'cadmin/admin_dashboard.php'; ?>"> Dashboard
         </a>
       </li>
 
@@ -42,10 +42,8 @@
           aria-haspopup="true" aria-expanded="false"> Students
         </a>
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/student/payment.php'; ?>"> <i class="fas fa-suitcase"></i> Payment</a>
-          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/student/registration.php'; ?>"> <i class="fas fa-user-check"></i> Registration</a>
-          <a class="dropdown-item" href="#"> <i class="fas fa-clipboard-list"></i> Master List</a>
-          <a class="dropdown-item" href="#"> <i class="far fa-list-alt"></i> Placement List</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/student/submissions.php'; ?>"> <i class="fas fa-suitcase"></i> Submissions</a>
+          
 
 
         </div>
@@ -91,7 +89,7 @@
     <li class="nav-item avatar dropdown notification-bar-item">
           <a class="nav-link dropdown-toggle dropdown-menu-right" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <img src="<?php echo $baseUrl."images/avatars/avatar-2.jpg";  ?>" class="img-fluid rounded-circle z-depth-0"
+            <img src="<?php echo $baseUrl."images/avatars/avatar_100.jpg";  ?>" class="img-fluid rounded-circle z-depth-0"
               alt="My Avatar" >
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs-right dropdown-menu-sm-right dropdown-menu-lg-left dropdown-secondary"

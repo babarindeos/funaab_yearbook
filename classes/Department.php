@@ -31,6 +31,18 @@
           return $stmt;
       }
 
+      public function get_all_units(){
+          //$sqlQuery
+          $sqlQuery = "Select id, name from units order by name";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->execute();
+
+          return $stmt;
+      }
+
       public function get_department_unit_id($deptCode){
           // $sqlQuery
           $sqlQuery = "Select id, name from units where name=:deptCode";
@@ -39,6 +51,22 @@
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
 
           $stmt->bindParam(":deptCode", $deptCode);
+
+          $stmt->execute();
+
+          return $stmt;
+
+      }
+
+
+      public function get_unit_by_id($unit_id){
+          // $sqlQuery
+          $sqlQuery = "Select id, name from units where id=:id";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->bindParam(":id", $unit_id);
 
           $stmt->execute();
 

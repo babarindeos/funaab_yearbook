@@ -49,7 +49,8 @@
           <!-- Salutation //-->
           <?php
 
-              echo "<div class='mb-2'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class=' col-mb-0'><strong>Welcome, </strong>".$_SESSION['names']."</div>";
+              echo "<div class='mb-4'><strong>Clearance Unit: </strong>".$_SESSION['unit_name']."</div>";
 
           ?>
         </div>
@@ -126,6 +127,8 @@
               require_once("../includes/footer.php");
          ?>
 <script src="../lib/js/custom/tblData.js"></script>
+<script src="../lib/js/custom/tblData2.js"></script>
+<script src="../lib/js/custom/tblData3.js"></script>
 <script>
 
 

@@ -14,7 +14,7 @@ if (!isset($_GET['regNumber'])) {
 $message = "";  //Error Message
 //$regNumberFound = $_GET['regNumber'];
 
-$page_title = "My Invoice - SIWES Dues & Logbook Charges";
+$page_title = "My Invoice - FUNAAB Yearbook";
 // Core
 require_once("core/config.php");
 // Header
@@ -119,7 +119,7 @@ table {width:750; background-color: #fff; font-family:Verdana, Arial, Helvetica,
 				<td ><img name="logo" src="images/wHeader.png" alt="" ></td>
 			</tr>
 			<tr>
-				<td class="heading"><?php echo "Invoice: SIWES Registration ($acadaSession Academic Session)";?>
+				<td class="heading"><?php echo "Invoice: FUNAAB Yearbook ($acadaSession Academic Session)";?>
 				<span id="control"><a href="#" onClick="window.print()">Print</a> | <a href="signin.php">Log Out</a></span> </td>
 			</tr>
 		</table>
@@ -171,7 +171,7 @@ table {width:750; background-color: #fff; font-family:Verdana, Arial, Helvetica,
         </tr>
 		<tr>
 			<td style="border-top:1px solid #009504; font-size:13px">
-			Ensure you take this bill to any bank branch that accept <strong>Remita Payment</strong> including FUNAAB Micro Finance Bank (UMFB), keep a copy for record purpose. After payment, within an hour, an email will be sent to your email account (as contained in your profile page) to proceed with your registration.
+			Ensure you take this bill to any bank branch that accept <strong>Remita Payment</strong> including FUNAAB Micro Finance Bank (UMFB), keep a copy for record purpose. 
 
 			<p><em>Payment can be made at any of the branches/locations nationwide.</em></p>
 			<strong>Payment is NOT by regular cash deposit: </strong>Ensure the bank posts the payment through <strong>Remita</strong> platform.

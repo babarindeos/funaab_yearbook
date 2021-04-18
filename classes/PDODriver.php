@@ -7,10 +7,13 @@
         private $password;
         private $db;
 
-        public $pdo_conn;
+        public static $pdo_conn;
+        //private static $counter;
+
 
         // Constructor
         public function __construct($host, $uid, $password, $db){
+
             parent::__construct($host, $db, $uid, $password);
             $this->host = $host;
             $this->db = $db;
@@ -20,15 +23,22 @@
 
         //Establish Database connection
         public function db_connect(){
-            //$this->pdo_conn = null;
 
-            if ($this->pdo_conn){
-                  return $this->pdo_conn;
+            if (self::$pdo_conn!=null){
+                  //echo "returning connection";
+                  //self::$counter++;
+                  //print("Counter ".self::$counter);
+                  //print "<br/>";
+                  //print_r(self::$pdo_conn);
+                  return self::$pdo_conn;
+
             }else{
                   try{
-                      $this->pdo_conn = new PDO("mysql:host={$this->host};dbname={$this->db}", $this->uid, $this->password);
-                      $this->pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                      return $this->pdo_conn;
+                      //echo "new connection";
+                      self::$pdo_conn = null;
+                      self::$pdo_conn = new PDO("mysql:host={$this->host};dbname={$this->db}", $this->uid, $this->password);
+                      self::$pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                      return self::$pdo_conn;
                   }catch(PDOException $e){
                       echo "Connection Error: ".$e->getMessage();
                       print_r($e);

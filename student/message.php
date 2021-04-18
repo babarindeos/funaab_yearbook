@@ -10,7 +10,9 @@
     $_GET_URL_message_id = $_GET_URL_message_id[1];
 
 
-    //echo $_GET_URL_message_id;
+    $parties = explode("_",$_GET_URL_message_id);
+
+
 
 
 
@@ -101,6 +103,32 @@
 //--------------------- end of isPostBack ------------------------------------------------------------
 
 
+
+
+// --------------------- Get My Id and Other party Id ------------------------------------------------
+$my_message_id = $matric_no;
+$recipient_id = '';
+if ($parties[0]!==$matric_no){
+  $recipient_id = $parties[0];
+}
+
+if ($parties[1]!=$matric_no){
+  $recipient_id = $parties[1];
+}
+
+
+// ----------- Get Recipient name ------------------------------------------------------------------
+$department = new Department();
+$get_unit = $department->get_unit_by_id($recipient_id);
+
+$get_unit = $get_unit->fetch(PDO::FETCH_ASSOC);
+$recipient_name = $get_unit['name'];
+
+
+
+
+// ---------------------- End of Other party name ---------------------------------------------------
+
 ?>
 
 
@@ -127,8 +155,15 @@
 
           ?>
         </div>
-        <!-- Send Message Form //-->
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+              <?php
+                  echo "<big>Message with <strong>{$recipient_name}</strong> </big>";
+              ?>
+
+        </div>
+        <!-- Send Message Form //-->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                   <form action="<?php echo $form_link; ?>" method="post">
                           <div class="form-group purple-border">
                               <label for="message"></label>
@@ -158,7 +193,7 @@
                                 $time_created = $date_created_raw->format('g:i a');
 
                                 $message = nl2br(FieldSanitizer::outClean($row['message']));
-                                echo "<tr class='mt-2'><td><strong>".$row['sender']."</strong><br/><small><i class='far fa-calendar-alt'></i> ".$date_created."  &nbsp;&nbsp;<i class='far fa-clock'></i> ".$time_created."</small><div class='mt-2'>".$message."</div></td></tr>";
+                                echo "<tr class='mt-2'><td><strong>".$row['sender']."</strong><br/><small><i class='far fa-calendar-alt'></i> ".$date_created."  &nbsp;&nbsp;<i class='far fa-clock'></i> ".$time_created."</small><hr/><div class='mt-2'>".$message."</div></td></tr>";
                             }
 
                       ?>

@@ -6,13 +6,14 @@
    private $session;
 
    public function getCollection($myPrefix, $acadaSession){
-  
+
 
      $this->prefix = $myPrefix;
-     $this->session = $acadaSession;
+     $this->session = $acadaSession;     
 
      // sqlQuery
      $sqlQuery = "SELECT prefix, amount, commission FROM collection WHERE prefix=:prefix and session=:session";
+
 
      // pdo Object
      $QueryExecutor = new PDO_QueryExecutor();

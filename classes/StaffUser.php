@@ -11,8 +11,10 @@
       public function getUserById($user_id){
           $this->user_id = $user_id;
           $sqlQuery =  "Select * from users where id=:id";
+
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor::customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           $stmt->bindParam(":id",$this->user_id);
 
@@ -23,9 +25,12 @@
 
       public function get_staff_by_id($user_id){
           $this->user_id = $user_id;
+
           $sqlQuery =  "Select * from staff where id=:id";
+
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor::customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           $stmt->bindParam(":id",$this->user_id);
 
@@ -37,17 +42,33 @@
       public function get_all_staff(){
 
           // sql statement
-          $sqlQuery = "Select u.id, u.file_no, u.title, u.first_name, u.last_name,
-                      u.other_names, u.position, u.avatar, u.date_created, u.date_modified, a.email, a.role from
-                      users u inner join auth a on u.id=a.user_id where a.role='staff' ";
+          $sqlQuery = "Select s.id, s.file_no, s.names, s.email, s.phone, s.unit_id, u.name as unit, s.date_created from staff s inner join units u
+                       on s.unit_id=u.id order by s.id desc";
 
           // PDOStatement, prepare and execute
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
+
           $stmt->execute();
           return $stmt;
 
       }
+
+      // public function get_all_staff(){
+      //
+      //     // sql statement
+      //     $sqlQuery = "Select u.id, u.file_no, u.title, u.first_name, u.last_name,
+      //                 u.other_names, u.position, u.avatar, u.date_created, u.date_modified, a.email, a.role from
+      //                 users u inner join auth a on u.id=a.user_id where a.role='staff' ";
+      //
+      //     // PDOStatement, prepare and execute
+      //     $QueryExecutor = new PDO_QueryExecutor();
+      //     $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+      //     $stmt->execute();
+      //     return $stmt;
+      //
+      // }
 
 
       public function email_exist($email){
@@ -59,6 +80,7 @@
           // pdo object, prepare
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           // bind parameters
           $stmt->bindParam(":email", $this->email);
@@ -79,6 +101,7 @@
           //PDO object
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           // bind Params
           $stmt->bindParam(":username", $this->username);
@@ -99,6 +122,7 @@
           //PDO Object
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           // bind parameter
           $stmt->bindParam(":user_id", $user_id);
@@ -117,6 +141,7 @@
           //PDO Object
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           // bind Params
           $stmt->bindParam(":user_id", $user_id);
@@ -152,6 +177,7 @@
 
           $QueryExecutor = new PDO_QueryExecutor();
           $stmt =  $QueryExecutor->customQuery()->prepare($sqlQuery);
+          $QueryExecutor = null;
 
           // bind Params
           $stmt->bindParam(":file_no", $file_no);

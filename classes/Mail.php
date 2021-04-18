@@ -15,9 +15,9 @@ class Mail implements MailInterface{
        // create email headers
        $headers .= 'From: '.$from."\r\n".
                    'Reply-To: '.$from."\r\n".
-                   'Return-Path: siwes@siwes.unaab.edu.ng'."\r\n".
-                   'CC: siwes@siwes.unaab.edu.ng'."\r\n".
-                   'BCC: siwes@siwes.unaab.edu.ng'."\r\n".
+                   'Return-Path: service@servicebill.unaab.edu.ng'."\r\n".
+                   'CC: service@servicebill.unaab.edu.ng'."\r\n".
+                   'BCC: service@servicebill.unaab.edu.ng'."\r\n".
                    'X-Mailer: PHP/'.phpversion();
 
       $body = '<html><body>';

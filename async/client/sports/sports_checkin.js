@@ -4,7 +4,7 @@ $(document).ready(function(){
       $("#btn_sports_checkin").on("click",function(){
 
           // disable and hide button for further Click
-          $(this).prop("disable", true);
+          $(this).prop("disabled", true);
           $(this).hide();
 
 
