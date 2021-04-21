@@ -79,7 +79,6 @@
 
 
 
-
       <!-- Heading pane //-->
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h4 class='mb-4'>Clearance for Students Withdrawing/Graduating from the University<br><small>2019/2020 Academic Session</small></h4>
@@ -91,7 +90,21 @@
               echo "<div class='mb-2'><strong>Welcome, </strong>".$surname." ".$firstname." ".$othername."</div>";
 
           ?>
+
+
         </div>
+
+
+        <!-- Progress Bar //-->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-12">
+                <?php
+                    require_once("progress_indicator.php");
+                ?>
+
+        </div>  <!-- End of Progress Bar  //-->
+
+
+
         <!-- Clearance form //-->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
 

@@ -40,12 +40,12 @@
         // check student Status: if PAID
         $applicant = new Applicant();
 
-
+       if ($studentStatus=="PAID"){
+             //echo 'PAID';
              $getApplicant = $applicant->getApplicant($regNumber);
 
-             // ---------------------------  check if record is not found and insert into applicants -------------------------
+             // check if record is not found and insert into applicants
              if ($getApplicant->rowCount()==0){
-
                        // create applicant record for the user
                        //echo "Applicant is not created";
 
@@ -55,7 +55,9 @@
 
                        $new_applicant = $applicant->create_new_applicant($applicantData);
 
-                       //------------------ if new applicant is already created -------------------------------------
+
+
+                       // if new applicant is created
                        if ($new_applicant->rowCount()){
                            //session_start();
 
@@ -77,7 +79,6 @@
                             $err_flag = 1;
                             $err_msg .= 'Record not saved. Please try again.';
                        }
-                       //-------------------- end of if new applicant has already been created -----------------------
              }else{
                      // applicant had already been created...then redirect to the prepayment page
                          //session_start();
@@ -93,8 +94,15 @@
                          }
 
              }
-             // ---------------------check if record is not found and insert into applicants --------------------------
 
+         }else{
+                         // School fees status not PAID
+                         //echo "School fees not PAID";
+
+                         $err_flag = 1;
+                         $err_msg .= "School Fees Payment Status: Not PAID";
+
+         }
 
 
      }

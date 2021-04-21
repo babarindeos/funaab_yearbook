@@ -1,3 +1,5 @@
+
+<h5>Schools Fees Payment Details</h5>
 <?php
 
 require_once("../includes/ws_parameters.php");
@@ -20,6 +22,8 @@ $student_start_year = substr($matric_no,0,4);
 $continue_process = true;
 $next_session = $student_start_year;
 
+
+echo "<table class='table table-striped border mt-3'>";
 while($continue_process){
 
     $start_session = $next_session;
@@ -33,10 +37,25 @@ while($continue_process){
           $err_flag==1;
           //$err_msg = "Student Portal not available ($studentDetails), please try again later. ";
           $err_msg = "Student Portal not available, please try again later. ";
+
+          echo "<tr><td>{$err_msg}</td></tr>";
+
     }else{
         //Retrieve Record from Portal
         $json =json_decode(json_encode($student_reginfo_by_session));
-        print_r($json);
+        //print_r($json);
+
+
+        $payment_status = trim($json->PaymentStatus);
+        $academic_level = trim($json->Level);
+
+        if ($payment_status=='PAID'){
+          $payment_status = "<span class='text-success'><strong>{$payment_status}</strong></span>";
+        }else{
+          $payment_status = "<span class='text-danger'><strong>{$payment_status}</strong></span>";
+        }
+
+        echo "<tr><td>{$acadaSession}</td><td>{$academic_level}</td><td>{$payment_status}</td></tr>";
         //exit;
     }
 
@@ -45,10 +64,9 @@ while($continue_process){
        break;
     }
 
+} // end of while
 
-
-
-}
+echo "</table>";
 
 
 

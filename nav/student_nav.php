@@ -28,22 +28,22 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
-      <!-- Home Sample //-->
+      <!-- Clearance form //-->
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo $baseUrl.'student/clearance_form.php'; ?>">Clearance form
+        <a class="nav-link" href="<?php echo $baseUrl.'student/clearance_form.php'; ?>">Clearance Form
           <!-- <span class="sr-only">(current)</span> //-->
         </a>
       </li>
-      <!-- end of Home Sample //-->
+      <!-- end of Clearance form //-->
 
-      <!-- Office menu
+      <!-- My Files //-->
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo $baseUrl.'student/dept_lab_manuals.php'; ?>" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false">  Home
+        <a class="nav-link" href="<?php echo $baseUrl.'student/my_files.php'; ?>" id="navbarDropdownMenuLink-555"
+          aria-haspopup="true" aria-expanded="false">  My files
         </a>
 
       </li>
-      <!-- end office menu //-->
+      <!-- end of my files //-->
 
 
 
@@ -56,11 +56,11 @@
       </li>
       <!-- end projects menu //-->
 
-      <!-- Payment menu
+      <!-- Payment menu //-->
       <li class="nav-item">
         <a class="nav-link" href="<?php echo $baseUrl.'student/my_payment_transactions.php'; ?>" id="navbarDropdownMenuLink-555"
           aria-haspopup="true" aria-expanded="false">
-             Payment Transactions
+             My Payment Transactions
         </a>
 
       </li>

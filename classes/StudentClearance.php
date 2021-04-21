@@ -323,6 +323,25 @@ error_reporting(E_ALL);
       }
 
 
+      public function get_division_clearance($matric_no, $division_id){
+          $sqlQuery = "Select acad_session, matric_no, division_id, unit_id, cleared, remark,
+                      reason, remedy, date_created from clearance_checkin
+                      where matric_no=:matric_no and division_id=:division_id";
+
+          // new PDO object
+          $this->QueryExecutor = new PDO_QueryExecutor();
+          $this->stmt = $this->QueryExecutor->customQuery()->prepare($sqlQuery);
+          $this->QueryExecutor = null;
+
+          // bind Params
+          $this->stmt->bindParam(":matric_no", $matric_no);
+          $this->stmt->bindParam("division_id", $division_id);
+
+          // execute
+          $this->stmt->execute();
+
+          return $this->stmt;
+      }
 
   }
 
