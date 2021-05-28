@@ -6,6 +6,7 @@
   //session_start();
 
 
+      require_once('../lib/phpqrcode/qrlib.php');
 
 
 
@@ -43,7 +44,7 @@
       require_once("../includes/ws_parameters.php");
 
 
-  //----------------------- Student Data -------------------------------------------------------------
+  //----------------------- Student Data ----------------------------------------------------
       //Initialise
           $studentData = $_SESSION['studentData'];
           $matric_no = $studentData['regNumber'];
@@ -58,11 +59,23 @@
           $deptCode = $studentData['deptCode'];
           $level  = $studentData['level'];
 
-//----------------------- End of Student Data --------------------------------------------------------
+//----------------------- End of Student Data -----------------------------------------------
+
+
+
+//----------------------- Currently active academic session ---------------------------------
+
+        $academic_session = new AcademicSession();
+        $get_current_active_session = $academic_session->get_active_session();
+        $get_current_active_session = $get_current_active_session->fetch(PDO::FETCH_ASSOC);
+
+        $current_active_session = $get_current_active_session['session'];
 
 
 
 
+
+//---------------------- End of Academic Session --------------------------------------------
 
 
 
@@ -593,3 +606,5 @@
 
 <script src="../async/client/alumni/upload_alumni_payment_receipt.js"></script>
 <script src="../async/client/alumni/alumni_checkin.js"></script>
+
+<script src="../async/client/proof_of_clearance/open_poc_page.js"></script>

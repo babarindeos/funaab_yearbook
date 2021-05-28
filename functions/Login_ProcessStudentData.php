@@ -31,7 +31,7 @@
 
      //echo $studentStatus;
      // verify if the student record is found
-     if (($surname=='') || ($firstname=='') || ($email=='') || ($phone=='')){
+     if (($surname=='') || ($firstname=='') || ($email=='')){
          $err_flag = 1;
          $err_msg = 'Error retrieving record. <br/>Check the Matriculation No. entered';
      }else{

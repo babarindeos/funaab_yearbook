@@ -43,7 +43,10 @@
           //unset($_SESSION['yearbook_receipt_file']);
           $_SESSION['alumni_receipt_file'] = $uploadAction['wp_filename'];
       }else{
-          unset($_SESSION['alumni_receipt_file']);
+          if (isset($_SESSION['alumni_receipt_file'])){
+              unset($_SESSION['alumni_receipt_file']);
+          }
+
       }
 
       $result = json_encode($uploadAction);

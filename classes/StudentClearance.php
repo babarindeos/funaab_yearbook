@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+  
   class StudentClearance{
 
       private $stmt;
@@ -341,6 +342,97 @@ error_reporting(E_ALL);
           $this->stmt->execute();
 
           return $this->stmt;
+      }
+
+      public function is_clearance_completed($matric_no){
+          //SqlQuery
+          $sqlQuery = "Select id, academic_session, matric_no, verification_code, qr_code,
+                       date_created from clearance_completed where matric_no=:matric_no";
+
+
+          // new PDO Object
+          $this->QueryExecutor = new PDO_QueryExecutor();
+          $this->stmt = $this->QueryExecutor->customQuery()->prepare($sqlQuery);
+          $this->QueryExecutor = null;
+
+          // bind Params
+          $this->stmt->bindParam(":matric_no", $matric_no);
+
+          $this->stmt->execute();
+
+          return $this->stmt;
+
+
+      }
+
+      public function register_clearance_completion($current_active_session, $studentData){
+
+          $matric_no = $studentData['matric_no'];
+          $surname =$studentData['surname'];
+          $verification_code = sha1(md5($matric_no));
+
+          // Generate qr_code
+           $qr_code = $this->generate_qr_code($studentData);
+
+          // sqlQuery
+          $sqlQuery = "Insert into clearance_completed set academic_session=:academic_session, matric_no=:matric_no,
+                       verification_code=:verification_code, qr_code=:qr_code";
+
+          // PDO object
+          $this->QueryExecutor = new PDO_QueryExecutor();
+          $this->stmt = $this->QueryExecutor->customQuery()->prepare($sqlQuery);
+          $this->QueryExecutor = null;
+
+          //bind Params
+          $this->stmt->bindParam(":academic_session", $current_active_session);
+          $this->stmt->bindParam(":matric_no", $matric_no);
+          $this->stmt->bindParam(":verification_code", $verification_code);
+          $this->stmt->bindParam(":qr_code", $qr_code);
+
+          //execute PDO Object
+          $this->stmt->execute();
+
+      }
+
+
+
+
+
+      public function generate_qr_code($studentData){
+
+          $matric_no = $studentData['matric_no'];
+          $surname = $studentData['surname'];
+          $firstname = $studentData['firstname'];
+          $othername = $studentData['othername'];
+          $emailFunaab = $studentData['emailFunaab'];
+          $deptCode = $studentData['deptCode'];
+
+          // create path and filename of qr image
+          $path = '../student/images/qrcode/';
+          $file_name = $matric_no.'_'.uniqid().'.png';
+          $file = $path.$file_name;
+
+
+          // Text to output
+          $text = "<strong>Matric No:</strong>  {$matric_no}<br/>";
+          $text .= "<strong>Surname:</strong>  {$surname}<br/>";
+          $text .= "<strong>Firstname:</strong>  {$firstname}<br/>";
+          $text .= "<strong>Othername:</strong>  {$othername}<br/>";
+          $text .= "<strong>Email:</strong>  {$emailFunaab}<br/>";
+          $text .= "<strong>Department:</strong>  {$deptCode}";
+
+          $qrcode = QRcode::png($text, $file);
+
+          return $file_name;
+
+
+
+      }
+
+      public function generate_bar_code($matric_no, $surname){
+          $bar = new Picqer\Barcode\BarcodeGeneratorHTML();
+          $code = $bar->getBarcode("{$matric_no}. {$surname}", $bar::TYPE_CODE_128);
+          return $code;
       }
 
   }

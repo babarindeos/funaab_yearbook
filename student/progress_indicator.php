@@ -53,4 +53,31 @@
     }
     //------------------   End of Declined -----------------------------------------------
 
+
+    //----------------- Check if All Units have cleared the Student ----------------------
+
+    if ($approved==9){
+        // check if record has been saved into clearance_completion table
+        $clearance = new StudentClearance();
+        $is_clearance_completed = $clearance->is_clearance_completed($matric_no);
+
+        if ($is_clearance_completed->rowCount()==0){
+            // add to clearance_completion table
+            $student_dataArray = array("matric_no"=>$matric_no,"surname"=>$surname,"firstname"=>$firstname,"othername"=>$othername,"emailFunaab"=>$emailFunaab,"deptCode"=>$deptCode);
+            $register_clearance_completion = $clearance->register_clearance_completion($current_active_session, $student_dataArray);
+        }
+
+
+        $is_clearance_completed = $clearance->is_clearance_completed($matric_no);
+        if ($is_clearance_completed->rowCount()){
+            $recordSet = $is_clearance_completed->fetch(PDO::FETCH_ASSOC);
+            $verification_code = $recordSet['verification_code'];
+            echo "<input id='verification_code' type='hidden' value='{$verification_code}' />";
+            echo "<div class='text-center'><h4>You have completed your clearance.<br/><div style='cursor:pointer;color:blue;' onclick='open_poc_page()'>Proof of Clearance Completion.</div></h4></div>";
+        }
+
+    }
+
+
+    //----------------- End of Check if All Units have cleared the Student ---------------
 ?>

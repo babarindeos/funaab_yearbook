@@ -6,7 +6,7 @@
       private static $host = '127.0.0.1';
       private static $uid = 'root';
       private static $password = '';
-      private static $db = 'student_clearance';
+      private static $db = 'students_affairs_yearbook';
 
       public static function customQuery(){
           try{
