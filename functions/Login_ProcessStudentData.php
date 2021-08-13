@@ -67,7 +67,7 @@
                             if (headers_sent()){
                                 die("<br/><br/><div class='mt-5 text-center'><big>If not re-directed. Please click on this link: <a href='student/clearance_form.php'>Clearance Form</a></big></div>");
                             }else{
-                                header("location:student/clearance_form.php");
+                                header("location:student/profile_update.php");
                             }
 
                        }else{

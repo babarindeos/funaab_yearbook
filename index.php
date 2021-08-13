@@ -9,7 +9,7 @@
       //error_reporting(E_ALL);
 
 
-      $page_title = "Clearance for Students";
+      $page_title = "Yearbook";
 
       // Core
       require_once("core/config.php");
@@ -23,6 +23,7 @@
       require_once("includes/ws_parameters.php");
       require_once("includes/ws_functions.php");
       include_once("includes/funaabWS.php");
+      //include_once("includes/Eligibility.php");
 
       //functions
       require_once("functions/Login_ProcessStudentData.php");
@@ -59,26 +60,46 @@
           }else{
               //Retrieve Record from Portal
               $json =json_decode(json_encode($studentDetails));
-              //print_r($json);
+              print_r($json);
               //exit;
+
 
               //check if portal password is current
               $portal_passwordHash = trim($json->PasswordHash);
               $form_login_portal_password = trim(md5($login_portal_password));
 
 
-              if ($form_login_portal_password==$portal_passwordHash){
-                  $err_msg = processStudentData($regNumber, $json);
+              $start_year = substr($matric_no,0,4);
+              $current_year = Date('Y');
+              $studentship_duration = $current_year - $start_year;
+              $isEligible = false;
 
-                  if ($err_msg!=''){
-                    $err_flag = 1;
-                  }
-              }else{
-
-                  $err_flag = 1;
-                  $err_msg = "Invalid Sign-in Credentials";
-
+              if ($studentship_duration >= $minDuration){
+                $isEligible = true;
               }
+
+
+              //echo "<br/><br/><br/><br/><p><p>".$json->Level;
+              if ($isEligible){
+                    if ($form_login_portal_password==$portal_passwordHash){
+                        
+                        $err_msg = processStudentData($regNumber, $json);
+
+                        if ($err_msg!=''){
+                          $err_flag = 1;
+                        }
+                    }else{
+
+                        $err_flag = 1;
+                        $err_msg = "Invalid Sign-in Credentials";
+
+                    } //  end of $form_login_portal_password
+              }else{
+                        $err_flag = 1;
+                        $err_msg = "You are ineligible to access this service.";
+              }
+
+
 
           } // end of else if
 
@@ -92,9 +113,11 @@
     <div class="row" style="margin-top:0;">
       <div class="col-xs-12 col-sm-12 col-md-8 col-xs-d-none col-lg-8"   >
           <div>
-
-              <div style="background-image:url('assets/images/funaab_student_graduands.jpg'); height:450px;">
+              <!-- <div style="background-image:url('assets/images/funaab_student_graduands.jpg'); height:450px;">
                     <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Clearance for Students Withdrawing/Graduating<br/>from the University.</h2></div>
+              </div> -->
+              <div>
+                    <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Yearbook 2019/2000</h2></div>
               </div>
           </div>
 
