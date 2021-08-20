@@ -11,7 +11,7 @@
 
 
 
-      $page_title = "Clearance for Students";
+      $page_title = "Student Affairs | YearBook";
 
       // Core
       require_once("../core/wp_config.php");
@@ -24,9 +24,11 @@
 
 
       // classes
-      require_once("../classes/StudentClearance.php");
-      require_once("../classes/Department.php");
-      require_once("../classes/Payment.php");
+      require_once("../abstract/Database.php");
+
+      require_once("../classes/PDO_QueryExecutor.php");
+      require_once("../classes/PDODriver.php");
+      require_once("../classes/YearBook.php");
 
 
 
@@ -42,6 +44,8 @@
       require_once("../includes/funaabWS.php");
       require_once("../includes/ws_functions.php");
       require_once("../includes/ws_parameters.php");
+
+      require_once("../functions/FieldSanitizer.php");
 
 
   //----------------------- Student Data ----------------------------------------------------
@@ -78,11 +82,148 @@
 //---------------------- End of Academic Session --------------------------------------------
 
 
+// ------------------------ isPostBack ------------------------------------------------------
+
+$err_flag = 0;
+$err_msg = '';
+
+if (isset($_POST['btnSubmit'])){
+  $dob_day = $_POST['dob_day'];
+  $dob_month = $_POST['dob_month'];
+  $phone = FieldSanitizer::inClean($_POST['phone']);
+  $email = FieldSanitizer::inClean($_POST['email']);
+  $address = FieldSanitizer::inClean($_POST['address']);
+  $uploaded_passport = $_POST['uploaded_passport'];
+
+
+    if ($dob_day==''){
+      $err_flag = 1;
+      $err_msg = '<small><i class="fas fa-asterisk"></i></small> Missing Day of Birth. Provide your day of birth.';
+    }
+
+    if ($dob_month==''){
+      $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Month of Birth. Provide your month of birth.</div>';
+      $err_flag = 1;
+    }
+
+
+    if ($email==''){
+      $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Email Address. Provide your email address.</div>';
+      $err_flag = 1;
+    }
+
+    if ($phone==''){
+      $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Phone No. Provide your functional phone number.</div>';
+      $err_flag = 1;
+    }
+
+    if ($address==''){
+      $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Address. Provide your residence address.</div>';
+      $err_flag = 1;
+    }
+
+    if ($uploaded_passport==''){
+      $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Passport Photograph. Upload a good quality passport of yourself.</div>';
+      $err_flag = 1;
+    }
+
+    if ($dob_day!='' && $dob_month!='' && $email!='' && $phone!='' && $address!='' && $uploaded_passport!=''){
+        $fullname = $surname.' '.$firstname.' '.$othername;
+        $dob = '';
+        switch($dob_day){
+          case '1':
+            $dob = '1st '.$dob_month;
+            break;
+          case '2':
+            $dob = '2nd '.$dob_month;
+            break;
+          case '3':
+            $dob = '3rd '.$dob_month;
+            break;
+          default:
+            $dob = $dob_day.'th '.$dob_month;
+            break;
+        }
+
+        $data_array = array("matric_no"=>$matric_no, "session"=>$current_active_session,"fullname"=>$fullname,"dob_day"=>$dob_day,
+                            "dob_month"=>$dob_month,"dob"=>$dob, "email"=>$email, "phone"=>$phone, "address"=>$address,
+                            "uploaded_passport"=>$uploaded_passport);
+
+        $yearbook = new YearBook();
+        $isYearBookDataCreated = $yearbook->checkforStudentData($matric_no);
+        //echo $isYearBookDataCreated->rowCount();
+
+        if ($isYearBookDataCreated->rowCount()){
+            $result = $yearbook->updateYearBookData($data_array);
+            if ($result->rowCount()){
+                $err_flag = 0;
+                $err_msg = "<div>YearBook record has been successfully created.</div>";
+            }else{
+                $err_flag = 1;
+                $err_msg = "<div>There was a problem creating your YearBook record.</div>";
+            }
+        }else{
+            $result = $yearbook->createYearBookData($data_array);
+            if ($result->rowCount()){
+                $err_flag = 0;
+                $err_msg = "<div>YearBook record has been successfully created.</div>";
+            }else{
+                $err_flag = 1;
+                $err_msg = "<div>There was a problem updating your YearBook record.</div>";
+            }
+        } // end of else if
+
+
+
+    } // end of if($dob_day)
+
+
+
+}
+
+
+
+
+//-------------------------- end of isPostBack ----------------------------------------------
+
+
+
+//---------------------------- Retrieve User Data ------------------------------------------
+    $dob_day = '';
+    $dob_month ='';
+    $dob = '';
+    $email = '';
+    $phone = '';
+    $address = '';
+
+
+    $yearbook = new YearBook();
+    $isYearBookDataCreated = $yearbook->checkforStudentData($matric_no);
+
+
+    $passport = "../images/generic_avatar.png";
+    if ($isYearBookDataCreated->rowCount()){
+        while($row = $isYearBookDataCreated->fetch(PDO::FETCH_ASSOC)){
+            $dob_day = $row['dob_day'];
+            $dob_month = $row['dob_month'];
+            $dob = $row['dob'];
+            $email = FieldSanitizer::outClean($row['email']);
+            $phone = FieldSanitizer::outClean($row['phone']);
+            $address = FieldSanitizer::outClean($row['address']);
+
+            if ($row['photo']!=''){
+                $passport = $row['photo'];
+            }
+
+
+        }
+    }
+
+
+//--------------------------- End of retrieve Data ------------------------------------------
+
 
 ?>
-
-
-
 
 <div class="container">
 
@@ -92,480 +233,149 @@
 
 
 
-      <!-- Heading pane //-->
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h4 class='mb-4'>Clearance for Students Withdrawing/Graduating from the University<br><small>2019/2020 Academic Session</small></h4>
+                <!-- Heading pane //-->
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h4 class='mb-4'>Student YearBook<br><small><?php echo $current_active_session; ?> Academic Session</small></h4>
 
-          <hr>
-          <!-- Salutation //-->
-          <?php
-
-              echo "<div class='mb-2'><strong>Welcome, </strong>".$surname." ".$firstname." ".$othername."</div>";
-
-          ?>
-
-
-        </div>
-
-
-        <!-- Progress Bar //-->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-12">
-                <?php
-                    require_once("progress_indicator.php");
-                ?>
-
-        </div>  <!-- End of Progress Bar  //-->
-
-
-
-        <!-- Clearance form //-->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
-
-          <!--Accordion wrapper-->
-          <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist"
-                aria-multiselectable="true">
-
-                    <!-- **************** Accordion card - Department/Programme ************************************ -->
+                    <hr>
+                    <!-- Salutation //-->
                     <?php
-                          $division_id = 1;
-                          $clearance = new StudentClearance();
-                          $get_dept_clearance = $clearance->get_checkin_status($division_id, $matric_no);
 
-                          $clearance_value = $get_dept_clearance;
-
-                          $division_header_icon = "dept_header_icon";
-                          include("../functions/Clearance_Status.php");
+                        echo "<div class='mb-2'><strong>Welcome, </strong>".$surname." ".$firstname." ".$othername."</div>";
 
                     ?>
-                    <div class="card">
+                </div>
 
-                            <!--  Card header  -->
-                            <div class="card-header" role="tab" id="headingUnfiled">
-
-                                  <!--Options/ Icon-->
-                                  <div class="dropdown float-left">
-                                        <button id='btn_dept_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                          aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                        </button>
-                                  </div>
-
-                                  <!-- Heading -->
-                                  <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapseUnfiled" aria-expanded="true"
-                                    aria-controls="collapseUnfiled">
-                                    <h5 class="mt-1 mb-0">
-                                      <span>Department/Programme</span>
-                                      <i class="fas fa-angle-down rotate-icon"></i>
-                                    </h5>
-                                  </a>
-
-                            </div>
-                            <!--  end of Card Header //-->
-
-                            <!--  Card body  -->
-                            <div id="collapseUnfiled" class="collapse" role="tabpanel" aria-labelledby="headingUnfiled"
-                                  data-parent="#accordionEx78">
-                                  <div class="card-body">
-
-                                      <?php
-                                            require_once("department_programme.php");
-                                      ?>
-
-                                  </div>
-                            </div>
-                            <!--  End of Card body -->
-                    </div>
-                    <!-- ****************************** Accordion card - Department/Programme ****************************** -->
-
-                    <!-- ***************************** Accordion card - Library  ******************************************************-->
-                    <?php
-                          $division_id = 2;
-                          $clearance = new StudentClearance();
-                          $get_library_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                          $clearance_value = $get_library_clearance;
-
-                          $division_header_icon = "library_header_icon";
-                          include("../functions/Clearance_Status.php");
-
-                    ?>
-                    <div class="card">
-
-                            <!--  Card header -->
-                            <div class="card-header" role="tab" id="heading79">
-
-                                  <!--Options-->
-                                  <div class="dropdown float-left">
-                                      <button id='btn_library_header' title="<?php echo $title; ?>"  class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                      </button>
-
-                                  </div><!-- end of Options //-->
-
-                                  <!-- Heading -->
-                                  <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse79" aria-expanded="true"
-                                    aria-controls="collapse79">
-                                      <h5 class="mt-1 mb-0">
-                                        <span>Library</span>
-                                        <i class="fas fa-angle-down rotate-icon"></i>
-                                      </h5>
-                                  </a><!-- end of Heading //-->
-
-                            </div>
-                            <!--   End of Card header  //-->
-
-                            <!-- Card body -->
-                            <div id="collapse79" class="collapse" role="tabpanel" aria-labelledby="heading79"
-                              data-parent="#accordionEx78">
-                              <div class="card-body">
-                                      <?php
-                                            require_once("library.php");
-                                      ?>
-
-
-                              </div>
-                            </div>
-                            <!-- End of Card body //-->
-                    </div>
-                    <!-- **************************** End of Accordion card - Library ***************** //-->
-
-                    <!-- **************************** Accordion card - Health Centre ****************** //-->
-                    <?php
-                          $division_id = 3;
-                          $clearance = new StudentClearance();
-                          $get_health_center_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                          $clearance_value = $get_health_center_clearance;
-
-                          $division_header_icon = "health_center_header_icon";
-                          include("../functions/Clearance_Status.php");
-
-                    ?>
-                    <div class="card">
-
-                            <!-- Card header -->
-                            <div class="card-header" role="tab" id="heading80">
-                                  <!--Options-->
-                                  <div class="dropdown float-left">
-                                    <button id='btn_health_center_header'  title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                      aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                    </button>
-                                  </div><!-- end of options //-->
-
-                                  <!-- Heading -->
-                                  <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse80" aria-expanded="true"
-                                    aria-controls="collapse80">
-                                    <h5 class="mt-1 mb-0">
-                                      <span>Health Centre</span>
-                                      <i class="fas fa-angle-down rotate-icon"></i>
-                                    </h5>
-                                  </a><!-- end of heading //-->
-                            </div><!-- end of Card header //-->
-
-                            <!-- Card body -->
-                                <div id="collapse80" class="collapse" role="tabpanel" aria-labelledby="heading80"
-                                  data-parent="#accordionEx78">
-                                  <div class="card-body">
-                                      <?php
-                                          require_once("health_center.php");
-                                      ?>
-
-                                  </div>
-                                </div>
-                      </div>
-                      <!-- ******************************** Accordion card - Health Centre ******************************************* -->
-
-                      <!-- ********************************* Accordion card - Bursary  *********************************************** -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 border rounded text-center mt-3">
                       <?php
-                            $division_id = 4;
-                            $clearance = new StudentClearance();
-                            $get_bursary_clearance = $clearance->get_checkin_status($division_id, $matric_no);
 
-                            $clearance_value = $get_bursary_clearance;
+                          if (isset($_SESSION['yearbook_passport']))
+                          {
+                                $generic_photo = "passports/".$_SESSION['yearbook_passport'];
+                                //echo "Session: ".$_SESSION['yearbook_passport'];
+                          }else{
+                                echo "DB: ".$generic_photo = $passport;
+                          }
 
-                            $division_header_icon = "bursary_header_icon";
-                            include("../functions/Clearance_Status.php");
+
+
+                          echo "<div class='avatar mx-auto white mt-4'><img width='250px' id='img_passport' src='{$generic_photo}' alt='{$surname} photo' class='rounded img-fluid border'></div> ";
+                          echo "<div class=' mt-1 mb-4'>Passport Photograph</div>";
 
                       ?>
-                      <div class="card">
 
-                                  <!-- Card header -->
-                                  <div class="card-header" role="tab" id="heading">
-                                        <!--Options-->
-                                        <div class="dropdown float-left">
-                                          <button id='btn_bursary_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                          </button>
-                                        </div>
-
-                                        <!-- Heading -->
-                                        <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse81" aria-expanded="true"
-                                          aria-controls="collapse81">
-                                          <h5 class="mt-1 mb-0">
-                                            <span>Bursary</span>
-                                            <i class="fas fa-angle-down rotate-icon"></i>
-                                          </h5>
-                                        </a>
-                                  </div><!-- end of Card header //-->
-
-                                  <!-- Card body -->
-                                  <div id="collapse81" class="collapse" role="tabpanel" aria-labelledby="heading"
-                                    data-parent="#accordionEx78">
-                                    <div class="card-body">
-                                          <?php
-                                                require_once("bursary.php");
-                                          ?>
-
-                                    </div>
-                              </div>
-                        </div>
-                        <!--********************************** Accordion card - Bursary ****************************** -->
-
-
-                        <!-- ********************************* Accordion card - Directorate of Sports  *********************************************** -->
-                        <?php
-                              $division_id = 5;
-                              $clearance = new StudentClearance();
-                              $get_sports_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                              $clearance_value = $get_sports_clearance;
-
-                              $division_header_icon = "sports_header_icon";
-                              include("../functions/Clearance_Status.php");
-
-                        ?>
-                        <div class="card">
-
-                                    <!-- Card header -->
-                                    <div class="card-header" role="tab" id="heading92">
-                                          <!--Options-->
-                                          <div class="dropdown float-left">
-                                            <button id='btn_sports_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                              aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                            </button>
-                                          </div>
-
-                                          <!-- Heading -->
-                                          <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse82" aria-expanded="true"
-                                            aria-controls="collapse82">
-                                            <h5 class="mt-1 mb-0">
-                                              <span>Directorate of Sports</span>
-                                              <i class="fas fa-angle-down rotate-icon"></i>
-                                            </h5>
-                                          </a>
-                                    </div><!-- end of Card header //-->
-
-                                    <!-- Card body -->
-                                    <div id="collapse82" class="collapse" role="tabpanel" aria-labelledby="heading92"
-                                      data-parent="#accordionEx78">
-                                      <div class="card-body">
-                                          <?php
-                                                require_once("sports.php");
-                                          ?>
-
-
-                                      </div>
-                                </div>
-                          </div>
-                          <!--********************************** Accordion card - Directorate of Sports ****************************** -->
-
-
-                          <!-- ********************************* Accordion card - Office of Advancement  *********************************************** -->
-                          <?php
-                                $division_id = 6;
-                                $clearance = new StudentClearance();
-                                $get_advancement_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                                $clearance_value = $get_advancement_clearance;
-
-                                $division_header_icon = "advancement_header_icon";
-                                include("../functions/Clearance_Status.php");
-
-                          ?>
-                          <div class="card">
-
-                                      <!-- Card header -->
-                                      <div class="card-header" role="tab" id="heading84">
-                                            <!--Options-->
-                                            <div class="dropdown float-left">
-                                              <button id='btn_advancement_header' title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                              </button>
-                                            </div>
-
-                                            <!-- Heading -->
-                                            <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse84" aria-expanded="true"
-                                              aria-controls="collapse84">
-                                              <h5 class="mt-1 mb-0">
-                                                <span>Office of Advancement</span>
-                                                <i class="fas fa-angle-down rotate-icon"></i>
-                                              </h5>
-                                            </a>
-                                      </div><!-- end of Card header //-->
-
-                                      <!-- Card body -->
-                                      <div id="collapse84" class="collapse" role="tabpanel" aria-labelledby="heading84"
-                                        data-parent="#accordionEx78">
-                                        <div class="card-body">
-                                              <?php
-                                                    require_once("advancement.php");
-                                              ?>
-
-
-                                        </div>
+                      <!-- spinner //-->
+                                  <div id='spinner' style="display:none;">
+                                        <?php
+                                            include("../functions/BigBlueSpinner.php");
+                                            echo "<span class='text-primary'> Uploading Passport Photograph...</span>";
+                                        ?>
                                   </div>
-                            </div>
-                            <!--********************************** Accordion card - Office of Advancement ****************************** -->
+                      <!-- end of spinner //-->
 
-                            <!-- ********************************* Accordion card - Student Affairs Office  *********************************************** -->
-                            <?php
-                                  $division_id = 7;
-                                  $clearance = new StudentClearance();
-                                  $get_students_affairs_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                                  $clearance_value = $get_students_affairs_clearance;
-
-                                  $division_header_icon = "students_affairs_header_icon";
-                                  include("../functions/Clearance_Status.php");
-
-                            ?>
-                            <div class="card">
-
-                                        <!-- Card header -->
-                                        <div class="card-header" role="tab" id="heading85">
-                                              <!--Options-->
-                                              <div class="dropdown float-left">
-                                                <button id="btn_students_affairs_header" title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                                  aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                                </button>
-                                              </div>
-
-                                              <!-- Heading -->
-                                              <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse85" aria-expanded="true"
-                                                aria-controls="collapse85">
-                                                <h5 class="mt-1 mb-0">
-                                                  <span>Students Affairs Office</span>
-                                                  <i class="fas fa-angle-down rotate-icon"></i>
-                                                </h5>
-                                              </a>
-                                        </div><!-- end of Card header //-->
-
-                                        <!-- Card body -->
-                                        <div id="collapse85" class="collapse" role="tabpanel" aria-labelledby="heading85"
-                                          data-parent="#accordionEx78">
-                                          <div class="card-body">
-                                              <?php
-                                                    require_once("students_affairs.php");
-                                              ?>
-
-
+                      <!-- file uploader //-->
+                                  <div class="md-form text-center" id='file_uploader' >
+                                      <div class="file-field">
+                                          <div class="btn btn-info btn-sm float-left">
+                                            <span>Choose Passport to Upload</span>
+                                            <input type="file" id="file">
                                           </div>
-                                    </div>
-                              </div>
-                              <!--********************************** Accordion card - Student Affairs Office ****************************** -->
-
-                              <!-- ********************************* Accordion card - Alumni  *********************************************** -->
-                              <?php
-                                    $division_id = 8;
-                                    $clearance = new StudentClearance();
-                                    $get_alumni_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                                    $clearance_value = $get_alumni_clearance;
-
-                                    $division_header_icon = "alumni_header_icon";
-                                    include("../functions/Clearance_Status.php");
-
-                              ?>
-                              <div class="card">
-
-                                          <!-- Card header -->
-                                          <div class="card-header" role="tab" id="heading86">
-                                                <!--Options-->
-                                                <div class="dropdown float-left">
-                                                  <button id="btn_alumni_header" title="<?php echo $title; ?>"  class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                                  </button>
-                                                </div>
-
-                                                <!-- Heading -->
-                                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse86" aria-expanded="true"
-                                                  aria-controls="collapse86">
-                                                  <h5 class="mt-1 mb-0">
-                                                    <span>Alumni</span>
-                                                    <i class="fas fa-angle-down rotate-icon"></i>
-                                                  </h5>
-                                                </a>
-                                          </div><!-- end of Card header //-->
-
-                                          <!-- Card body -->
-                                          <div id="collapse86" class="collapse" role="tabpanel" aria-labelledby="heading86"
-                                            data-parent="#accordionEx78">
-                                            <div class="card-body">
-                                              <?php
-                                                    require_once("alumni.php");
-                                              ?>
-
-                                            </div>
+                                          <div class="file-path-wrapper" >
+                                            <input class="file-path validate" type="text" placeholder="Upload Passport">
+                                          </div>
                                       </div>
-                                </div>
-                                <!--********************************** Accordion card - Alumni ****************************** -->
-
-
-
-                                <!-- ********************************* Accordion card - Exams and Records  *********************************************** -->
-                                <?php
-                                      $division_id = 9;
-                                      $clearance = new StudentClearance();
-                                      $get_exams_and_records_clearance = $clearance->get_checkin_status($division_id, $matric_no);
-
-                                      $clearance_value = $get_exams_and_records_clearance;
-
-                                      $division_header_icon = "exams_and_records_header_icon";
-                                      include("../functions/Clearance_Status.php");
-
-                                ?>
-                                <div class="card">
-
-                                            <!-- Card header -->
-                                            <div class="card-header" role="tab" id="heading87">
-                                                  <!--Options-->
-                                                  <div class="dropdown float-left">
-                                                    <button id="btn_exams_and_records_header" title="<?php echo $title; ?>" class="btn btn-sm m-0 mr-3 p-2 <?php echo $button_color; ?>" type="button" data-toggle="dropdown"
-                                                      aria-haspopup="true" aria-expanded="false"><?php echo $button_icon; ?>
-                                                    </button>
-                                                  </div>
-
-                                                  <!-- Heading -->
-                                                  <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapse87" aria-expanded="true"
-                                                    aria-controls="collapse87">
-                                                    <h5 class="mt-1 mb-0">
-                                                      <span>Exams and Records Office</span>
-                                                      <i class="fas fa-angle-down rotate-icon"></i>
-                                                    </h5>
-                                                  </a>
-                                            </div><!-- end of Card header //-->
-
-                                            <!-- Card body -->
-                                            <div id="collapse87" class="collapse" role="tabpanel" aria-labelledby="heading87"
-                                              data-parent="#accordionEx78">
-                                              <div class="card-body">
-
-                                                    <?php
-                                                          require_once("exams_and_records.php");
-                                                    ?>
-
-
-                                              </div>
-                                        </div>
                                   </div>
-                                  <!--********************************** Accordion card - Exams and Records ****************************** -->
-
-
-
+                      <!-- end of file uploader //-->
+                      <!--<button id='upload_passport' type='btn btn-sm btn-warning'>Upload Passport</button> //-->
                 </div>
-                <!--/.Accordion wrapper-->
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                          <!-- Postback feedback //-->
+                            <?php
+                                if (isset($_POST['btnSubmit'])){
+                                    if ($err_flag){
+                                        $err_msg = 'An error has occurred!<hr/>'.$err_msg;
+                                        miniErrorAlert($err_msg);
+                                    }else{
+                                        miniSuccessAlert($err_msg);
+                                    }
+                                }
+                            ?>
+                          <!-- End of postback feedback //-->
+                          <form action="profile_update.php" method="post">
 
-        </div>
-        <!-- end of Clearance form //-->
+
+                                      <div class='form-group mt-4'>
+                                          <label for='fullname'><strong>Full Name</strong></label>
+                                          <input type='text' class='form-control col-xs-12 col-sm-12 col-md-12 col-lg-12' readonly id='fullname' value="<?php echo $surname.' '.$firstname.' '.$othername; ?>">
+                                      </div>
+
+                                      <!-- Form Row  //-->
+                                      <div style='margin-bottom:-5px'>
+                                          <label for='dob'><strong>Day & Month of Birth</strong></label>
+                                      </div>
+                                      <div class='form-row' >
+                                            <div class='col'>
+                                              <div class='form-group mt-2 '>
+                                                <select class="browser-default custom-select" name="dob_day" id="dob_day">
+                                                  <option value=''>--Select Day --</option>
+                                                  <?php
+                                                      $selected = '';
+                                                      for($i=1; $i<=31; $i++){
+                                                        if ($i==$dob_day){$selected='selected';}else{$selected='';}
+                                                        echo "<option $selected value='".$i."'>".$i."</option>";
+                                                      }
+                                                  ?>
+                                                </select>
+                                              </div>
+                                            </div>
+
+                                            <div class='col'>
+                                              <div class='form-group mt-2'>
+                                                <select class="browser-default custom-select" name="dob_month" id="dob_month">
+                                                  <option value=''>-- Select Month--</option>
+                                                  <option <?php if($dob_month=='January'){echo 'selected';} ?> value="January">January</option>
+                                                  <option <?php if($dob_month=='February'){echo 'selected';} ?> value="February">February</option>
+                                                  <option <?php if($dob_month=='March'){echo 'selected';} ?> value="March">March</option>
+                                                  <option <?php if($dob_month=='April'){echo 'selected';} ?> value="April">April</option>
+                                                  <option <?php if($dob_month=='May'){echo 'selected';} ?> value="May">May</option>
+                                                  <option <?php if($dob_month=='June'){echo 'selected';} ?> value="June">June</option>
+                                                  <option <?php if($dob_month=='July'){echo 'selected';} ?> value="July">July</option>
+                                                  <option <?php if($dob_month=='August'){echo 'selected';} ?> value="August">August</option>
+                                                  <option <?php if($dob_month=='September'){echo 'selected';} ?> value="September">September</option>
+                                                  <option <?php if($dob_month=='October'){echo 'selected';} ?> value="October">October</option>
+                                                  <option <?php if($dob_month=='November'){echo 'selected';} ?> value="November">November</option>
+                                                  <option <?php if($dob_month=='December'){echo 'selected';} ?> value="December">December</option>
+                                                </select>
+                                              </div>
+                                            </div>
+                                      </div>
+                                      <!-- End of Form Row //-->
+
+
+                                      <div class='form-group mt-1'>
+                                          <label for='phone'><strong>Phone No.</strong></label>
+                                          <input type='text' class='form-control col-xs-12 col-sm-12 col-md-12 col-lg-12' id='phone' name='phone' value="<?php echo $phone; ?>">
+                                      </div>
+
+                                      <div class='form-group mt-1'>
+                                          <label for='email'><strong>Email</strong></label>
+                                          <input type='text' class='form-control col-xs-12 col-sm-12 col-md-12 col-lg-12' id='email' name='email' value="<?php echo $email; ?>">
+                                      </div>
+
+                                      <div class='form-group mt-1'>
+                                          <label for='address'><strong>Address</strong></label>
+                                          <input type='text' class='form-control col-xs-12 col-sm-12 col-md-12 col-lg-12' id='address' name='address' value="<?php echo $address; ?>" >
+                                      </div>
+
+                                      <div><input type='text' name='uploaded_passport' id='uploaded_passport' value="<?php if(isset($_SESSION['yearbook_passport'])){ echo $_SESSION['yearbook_passport']; } ?>"></div>
+
+                                      <div class='form-group mt-1'>
+                                          <button type='submit' class='btn btn-sm btn-primary' id='btnSubmit' name='btnSubmit'>Submit</button>
+                                      </div>
+                            </form>
+                </div>
+
+
 
       </div><!-- end of row //-->
 
@@ -574,37 +384,96 @@
 
   </div><!-- end of container //-->
 
-        <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
-        <input id="my_dept_unit_id" type="hidden" value="<?php echo $my_dept_unit_id; ?>" />
-        <input id="yearbook_uploaded_file" type="hidden" value="<?php echo $_SESSION['yearbook_receipt_file']; ?>" />
+        <input id='matric_no' type='text' value="<?php echo $matric_no; ?>" />
 
-        <input id="alumni_uploaded_file" type="hidden" value="<?php echo $_SESSION['alumni_receipt_file']; ?>" />
 
-        <input id="e-records_certificate_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Certificate']; ?>" />
-        <input id="e-records_statement_of_result_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Statement of Result']; ?>" />
-        <input id="e-records_academic_gown_receipt_uploaded_file" type="hidden" value="<?php echo $_SESSION['Receipt of Academic Gown']; ?> " />
-        <!-- <input id='matric_no' type='hidden' value="15064" /> //-->
         <br/><br/><br/>
         <?php
               //footer
               require_once("../includes/footer.php");
          ?>
 
+<script>
+    $(document).ready(function(){
 
-<script src="../async/client/department_programme/department_programme.js"></script>
-<script src="../async/client/library/library_checkin.js"></script>
-<script src="../async/client/health_center/health_center_checkin.js"></script>
-<script src="../async/client/bursary/bursary_checkin.js"></script>
-<script src="../async/client/sports/sports_checkin.js"></script>
-<script src="../async/client/advancement/advancement_checkin.js"></script>
-<script src="../async/client/students_affairs/students_affairs_checkin.js"></script>
-<script src="../async/client/students_affairs/upload_yearbook.js"></script>
-<script src="../async/client/students_affairs/initiate_payment.js"></script>
-<script src="../async/client/exams_and_records/upload_receipts.js"></script>
-<script src="../async/client/exams_and_records/save_uploaded_file_info.js"></script>
-<script src="../async/client/exams_and_records/exams_and_records_checkin.js"></script>
+      // file upload
+              $("#file").on("change", function(){
+                    var property = document.getElementById("file").files[0];
+                    var image_name = property.name;
 
-<script src="../async/client/alumni/upload_alumni_payment_receipt.js"></script>
-<script src="../async/client/alumni/alumni_checkin.js"></script>
+                    var image_extension = image_name.split('.').pop().toLowerCase();
 
-<script src="../async/client/proof_of_clearance/open_poc_page.js"></script>
+                    if (jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])==-1){
+                          alert("Invalid image format. Please select an image file in any of the specified format.");
+                    }else{
+
+                        run_file_upload(property);
+                    }
+
+              });
+
+// -------------------------------------------------------------------------------------------
+// function to load files
+    function run_file_upload(property){
+          var image_size = property.size;
+          image_size = image_size/1024;
+          //alert(image_size);
+          if (image_size>20000){
+              alert("The file is larger than the allowed 20MB size. Please resize and try again.");
+          }else{
+                  var form_data = new FormData();
+                  form_data.append("file", property);
+                  //form_data.append("source", 'announcement');
+                  //form_data.append("file_type", file_type);
+
+                  var matric_no = $("#matric_no").val();
+
+                  $.ajax({
+                      url: '../async/server/file_upload/yearbook_upload_passport.php?source=students_affairs&matric_no='+matric_no,
+                      method: "POST",
+                      data: form_data,
+                      dataType:  'json',
+                      contentType: false,
+                      cache: false,
+                      processData: false,
+                      beforeSend: function(){
+                          $("#file_uploader").hide();
+                          $("#spinner").show();
+                      },
+                      success: function(data){
+                          //console.log("am here");
+                          //console.log(data.status);
+                          //alert(data);
+                          $("#spinner").hide();
+                          $("#file_uploader").show();
+
+                          //data = JSON.parse(data);
+                          if (data.status=='success'){
+
+                              $("#uploaded_passport").val(data.wp_filename);
+
+                              var img_location = "passports/"+data.wp_filename;
+
+                              console.log(img_location);
+                              $("#img_passport").attr("src",img_location);
+
+
+                              location.reload();
+
+                          }
+
+                      }
+                  });
+          } // end of if
+    }
+// -------------------------------------------------------------------------------------------
+
+
+
+
+
+//---------------------------------------------------------------------------------------------
+
+});  // end of document.ready(function())
+
+</script>

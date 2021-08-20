@@ -28,43 +28,17 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
-      <!-- Clearance form //-->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo $baseUrl.'student/clearance_form.php'; ?>">Clearance Form
-          <!-- <span class="sr-only">(current)</span> //-->
-        </a>
-      </li>
-      <!-- end of Clearance form //-->
 
-      <!-- My Files //-->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo $baseUrl.'student/my_files.php'; ?>" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false">  My files
-        </a>
-
-      </li>
-      <!-- end of my files //-->
+            <!-- Profile Update //-->
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $baseUrl.'student/profile_update.php'; ?>">My YearBook Data
+                  <!-- <span class="sr-only">(current)</span> //-->
+                </a>
+            </li>
+            <!-- end of Profile Update //-->
 
 
 
-      <!-- Projects menu
-      <li class="nav-item">
-        <a class="nav-link" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false">  My Manuals
-        </a>
-
-      </li>
-      <!-- end projects menu //-->
-
-      <!-- Payment menu //-->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo $baseUrl.'student/my_payment_transactions.php'; ?>" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false">
-             My Payment Transactions
-        </a>
-
-      </li>
-      <!-- end projects menu //-->
 
 
     </ul>

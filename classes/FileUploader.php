@@ -136,6 +136,37 @@
         }
 
 
+        public function uploadYearBookPassport($source, $file, $matric_no){
+
+            if ($file['name'] !=''){
+                $fileName = $file['name'];  // $_FILES['file']['name']
+                $split_name = explode('.', $fileName);
+                $extension = end($split_name);
+                $today = date('Ymd_H_i_s');
+                $wp_name = $matric_no.'.'.$extension;
+
+
+
+                $location = "../../../student/passports/{$wp_name}";
+
+
+                $result = move_uploaded_file($file['tmp_name'], $location);
+
+                $response = '';
+                if ($result==1){
+                    $response  = array("status"=>'success', "wp_filename"=>$wp_name);
+                }else{
+                    $response = array("status"=>'error', "wp_filename"=>'');
+                }
+
+                return $response;
+
+            }
+
+        }
+
+
+
 
 
 

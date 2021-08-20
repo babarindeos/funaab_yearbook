@@ -65,7 +65,7 @@
                            $_SESSION['studentData'] = $dataArray;
 
                             if (headers_sent()){
-                                die("<br/><br/><div class='mt-5 text-center'><big>If not re-directed. Please click on this link: <a href='student/clearance_form.php'>Clearance Form</a></big></div>");
+                                die("<br/><br/><div class='mt-5 text-center'><big>If not re-directed. Please click on this link: <a href='student/profile_update.php'>Clearance Form</a></big></div>");
                             }else{
                                 header("location:student/profile_update.php");
                             }
@@ -89,7 +89,7 @@
                          if (headers_sent()){
                            die("<div class='mt-5 text-center'><big>If not redirected. Please click on this link: <a href='student/clearance_form.php'>Clearance Form</a></big></div>");
                          }else{
-                           header("location:student/clearance_form.php");
+                           header("location:student/profile_update.php");
                          }
 
              }

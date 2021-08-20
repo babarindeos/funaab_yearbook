@@ -60,7 +60,7 @@
           }else{
               //Retrieve Record from Portal
               $json =json_decode(json_encode($studentDetails));
-              print_r($json);
+              //print_r($json);
               //exit;
 
 
@@ -82,7 +82,7 @@
               //echo "<br/><br/><br/><br/><p><p>".$json->Level;
               if ($isEligible){
                     if ($form_login_portal_password==$portal_passwordHash){
-                        
+
                         $err_msg = processStudentData($regNumber, $json);
 
                         if ($err_msg!=''){
