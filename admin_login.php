@@ -19,11 +19,11 @@ error_reporting(E_ALL);
        $loginUsername = $_POST['loginUsername'];
        $loginPassword = $_POST['loginPassword'];
 
-       if ($loginUsername=='admin' && $loginPassword=='directorate')
+       if ($loginUsername=='myadmin' && $loginPassword=='affairs2021')
        {
             $_SESSION['ulogin_state'] = 200;
             if (headers_sent()){
-                die("<br/><br/><div class='mt-5 text-center'><big><strong>You are signed-in.</strong><br/> If not re-directed. Please click on this link: <a href='cadmin/admin_dashboard.php'>University Online Clearance Platform.</a></big></div>");
+                die("<br/><br/><div class='mt-5 text-center'><big><strong>You are signed-in.</strong><br/> If not re-directed. Please click on this link: <a href='cadmin/admin_dashboard.php'>Student Affairs Admin Office</a></big></div>");
             }else{
                 header("location: cadmin/admin_dashboard.php");
             }
@@ -41,7 +41,7 @@ error_reporting(E_ALL);
 
        <!-- top pane //-->
        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
-           <h3>Clearance Division Online Office</h3>
+           <h3>YearBook Admin Online Office</h3>
        </div>
        <!-- end of top pane //-->
 

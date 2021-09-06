@@ -122,7 +122,7 @@ if (isset($_POST['btnSubmit'])){
       $err_flag = 1;
     }
 
-    if ($uploaded_passport==''){
+    if ($uploaded_passport=='../../images/generic_avatar.png'){
       $err_msg .= '<div><small><i class="fas fa-asterisk"></i></small> Missing Passport Photograph. Upload a good quality passport of yourself.</div>';
       $err_flag = 1;
     }
@@ -155,21 +155,17 @@ if (isset($_POST['btnSubmit'])){
 
         if ($isYearBookDataCreated->rowCount()){
             $result = $yearbook->updateYearBookData($data_array);
-            if ($result->rowCount()){
                 $err_flag = 0;
-                $err_msg = "<div>YearBook record has been successfully created.</div>";
-            }else{
-                $err_flag = 1;
-                $err_msg = "<div>There was a problem creating your YearBook record.</div>";
-            }
+                $err_msg = "Your YearBook record has been successfully updated.";
+
         }else{
             $result = $yearbook->createYearBookData($data_array);
             if ($result->rowCount()){
                 $err_flag = 0;
-                $err_msg = "<div>YearBook record has been successfully created.</div>";
+                $err_msg = "Your YearBook record has been successfully created.";
             }else{
                 $err_flag = 1;
-                $err_msg = "<div>There was a problem updating your YearBook record.</div>";
+                $err_msg = "There was a problem creating your YearBook record.";
             }
         } // end of else if
 
@@ -201,7 +197,7 @@ if (isset($_POST['btnSubmit'])){
     $isYearBookDataCreated = $yearbook->checkforStudentData($matric_no);
 
 
-    $passport = "../images/generic_avatar.png";
+    $passport = "../../images/generic_avatar.png";
     if ($isYearBookDataCreated->rowCount()){
         while($row = $isYearBookDataCreated->fetch(PDO::FETCH_ASSOC)){
             $dob_day = $row['dob_day'];
@@ -213,6 +209,7 @@ if (isset($_POST['btnSubmit'])){
 
             if ($row['photo']!=''){
                 $passport = $row['photo'];
+
             }
 
 
@@ -221,6 +218,30 @@ if (isset($_POST['btnSubmit'])){
 
 
 //--------------------------- End of retrieve Data ------------------------------------------
+
+
+
+if (isset($_GET['dob_day'])){
+    $dob_day = $_GET['dob_day'];
+}
+
+if (isset($_GET['dob_month'])){
+    $dob_month = $_GET['dob_month'];
+}
+
+if (isset($_GET['phone'])){
+    $phone = $_GET['phone'];
+}
+
+if (isset($_GET['email'])){
+    $email = $_GET['email'];
+}
+
+if (isset($_GET['address'])){
+    $address = $_GET['address'];
+}
+
+//--------------------------- End of GET ---------------------------------------------------
 
 
 ?>
@@ -254,7 +275,7 @@ if (isset($_POST['btnSubmit'])){
                                 $generic_photo = "passports/".$_SESSION['yearbook_passport'];
                                 //echo "Session: ".$_SESSION['yearbook_passport'];
                           }else{
-                                echo "DB: ".$generic_photo = $passport;
+                                $generic_photo = "passports/".$passport;
                           }
 
 
@@ -367,7 +388,7 @@ if (isset($_POST['btnSubmit'])){
                                           <input type='text' class='form-control col-xs-12 col-sm-12 col-md-12 col-lg-12' id='address' name='address' value="<?php echo $address; ?>" >
                                       </div>
 
-                                      <div><input type='text' name='uploaded_passport' id='uploaded_passport' value="<?php if(isset($_SESSION['yearbook_passport'])){ echo $_SESSION['yearbook_passport']; } ?>"></div>
+                                      <div><input type='hidden' name='uploaded_passport' id='uploaded_passport' value="<?php if(isset($_SESSION['yearbook_passport'])){ echo $_SESSION['yearbook_passport']; }else{ echo $passport; } ?>"></div>
 
                                       <div class='form-group mt-1'>
                                           <button type='submit' class='btn btn-sm btn-primary' id='btnSubmit' name='btnSubmit'>Submit</button>
@@ -384,7 +405,7 @@ if (isset($_POST['btnSubmit'])){
 
   </div><!-- end of container //-->
 
-        <input id='matric_no' type='text' value="<?php echo $matric_no; ?>" />
+        <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
 
 
         <br/><br/><br/>
@@ -457,8 +478,15 @@ if (isset($_POST['btnSubmit'])){
                               console.log(img_location);
                               $("#img_passport").attr("src",img_location);
 
+                              var dob_day = $("#dob_day").val();
+                              var dob_month = $("#dob_month").val();
+                              var phone = $("#phone").val();
+                              var email = $("#email").val();
+                              var address = $("#address").val();
 
-                              location.reload();
+                              location.reload(true);
+                              var loc = "profile_update.php?dob_day="+dob_day+"&dob_month="+dob_month+"&phone="+phone+"&email="+email+"&address="+address;
+                              window.location.href= loc;
 
                           }
 

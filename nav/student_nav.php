@@ -50,6 +50,7 @@
 
 
   <ul class="navbar-nav ml-auto nav-flex-icons">
+    <!--
     <li class="nav-item">
       <a class="nav-link waves-effect waves-light">
         <i class="fas fa-envelope"></i>
@@ -60,6 +61,7 @@
         <i class="fas fa-comments"></i>
       </a>
     </li>
+    //-->
 
     <li class="nav-item avatar dropdown notification-bar-item">
           <a class="nav-link dropdown-toggle dropdown-menu-right" id="navbarDropdownMenuLink-55" data-toggle="dropdown"

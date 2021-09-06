@@ -16,43 +16,46 @@
       </li>
       <!-- end of Home Sample //-->
 
+
+      <!--
       <li class="nav-item">
         <a class="nav-link" id="navbarDropdownMenuLink-555"
-          aria-haspopup="true" aria-expanded="false" href="<?php echo $baseUrl.'cadmin/admin_dashboard.php'; ?>"> Dashboard
+          aria-haspopup="true" aria-expanded="false" href="<?php //echo $baseUrl.'cadmin/admin_dashboard.php'; ?>"> Dashboard
         </a>
       </li>
+      //-->
 
-      <!-- Office menu //-->
+      <!-- Office menu
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false"> Staff
         </a>
 
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/staff/create_staff.php'; ?>" > <i class="fas fa-user-plus"></i> Create Staff</a>
-          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/staff/staff_records.php'; ?>" > <i class="fas fa-users"></i> Staff Records</a>
+          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/staff/create_staff.php'; ?>" > <i class="fas fa-user-plus"></i> Create Staff</a>
+          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/staff/staff_records.php'; ?>" > <i class="fas fa-users"></i> Staff Records</a>
 
         </div>
       </li>
-      <!-- end office menu //-->
+      end office menu //-->
 
-      <!-- Project menu //-->
+      <!-- Project menu
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false"> Students
         </a>
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/student/submissions.php'; ?>"> <i class="fas fa-suitcase"></i> Submissions</a>
-          
+          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/student/submissions.php'; ?>"> <i class="fas fa-suitcase"></i> Submissions</a>
+
 
 
         </div>
       </li>
-      <!-- end project menu //-->
+       end project menu //-->
 
 
 
-      <!-- Message menu //-->
+      <!-- Message menu 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">Messages

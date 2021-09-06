@@ -1,5 +1,6 @@
 <?php
       session_start();
+      unset($_SESSION['yearbook_passport']);
       session_destroy();
 
       session_start();
@@ -117,8 +118,19 @@
                     <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Clearance for Students Withdrawing/Graduating<br/>from the University.</h2></div>
               </div> -->
               <div>
-                    <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Yearbook 2019/2000</h2></div>
+                    <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Yearbook 2019/2020</h2></div>
               </div>
+
+              <h4 class='mt-5 ml-3'>For Final Year Students</h4>
+              <ul>
+                  <li>Enter your Matriculation No. and Portal Password to login</li>
+                  <li>Upload a good quality passport photograph of yourself</li>
+                  <li>Provide your Day and Month of Birth</li>
+                  <li>Provide accurate and functional email address</li>
+                  <li>Provide one or two functional phone number</li>
+                  <li>Provide your contact address</li>
+
+              </ul>
           </div>
 
 

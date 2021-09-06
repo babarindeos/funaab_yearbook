@@ -2,7 +2,7 @@
     $page_title = 'Admin Dashboard';
 
     $link = "../core/wp_config.php";
-    $core_path = str_replace("\\","/", ((substr(realpath($link), (strpos(realpath($link),"siwes")+5)))));
+    $core_path = str_replace("\\","/", ((substr(realpath($link), (strpos(realpath($link),"yearbook")+5)))));
 
     require("../core/wp_config.php");
     require_once("../nav/admin_nav.php");
@@ -11,14 +11,22 @@
     $department = new Department();
     $get_units = $department->get_all_units();
 
+    $acada_session = new AcademicSession();
+    $get_acada_session = $acada_session->get_active_session();
+    $get_current_active_session = $get_acada_session->fetch(PDO::FETCH_ASSOC);
 
-    $clearance = new StudentClearance();
+
+    $get_current_active_session =  $get_current_active_session['session'];
+
+
+    $yearbook = new YearBook();
+    $get_current_yearbook = $yearbook->get_students($get_current_active_session);
 
 
 
 ?>
 <!-- Dashboard body //-->
-<div class="container">
+<div class="container-fluid">
 
     <!-- Page header //-->
     <div class="row mb-4">
@@ -46,38 +54,53 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Submission</th>
-                                <th scope="col">Pending</th>
-                                <th scope="col">Approved</th>
-                                <th scope="col">Declined</th>
+                                <th scope="col">Photo</th>
+                                <th scope="col">Names | DOB</th>
+                                <th scope="col">Dept | College</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $counter = 1;
-                                while($row = $get_units->fetch(PDO::FETCH_ASSOC)){
+                                while($row = $get_current_yearbook->fetch(PDO::FETCH_ASSOC)){
 
-                                  $unit_name = FieldSanitizer::outClean($row['name']);
-                                  $unit_id = $row['id'];
+                                  $acada_session = $row['session'];
+                                  $photo = $row['photo'];
+                                  $matric_no = $row['matric_no'];
+                                  $fullname = $row['fullname'];
+                                  $dob = $row['dob'];
+                                  $email = $row['email2'];
+                                  $phone = $row['phone2'];
+                                  $address = $row['address'];
+                                  $date_created_raw = new DateTime($row['date_created']);
+                                  $date_created = $date_created_raw->format('l jS F, Y');
+                                  $time_created = $date_created_raw->format('g:i a');
 
-                                  $get_submissions =number_format($clearance->get_no_of_clearance_submission_by_unit($unit_id));
-                                  $get_pending = number_format($clearance->get_no_of_awaiting_clearance_in_unit($unit_id));
-                                  $get_approved = number_format($clearance->get_no_of_approved_clearance_in_unit($unit_id));
-                                  $get_declined = number_format($clearance->get_no_of_declined_clearance_in_unit($unit_id));
 
-                                  $submission_link = "<a class='text-primary' href='clearance/unit_clearance.php?u=".mask($unit_id)."&t=".mask('submission')."'>{$get_submissions}</a>";
-                                  $pending_link = "<a class='text-primary' href='clearance/unit_clearance.php?u=".mask($unit_id)."&t=".mask('pending')."'>{$get_pending}</a>";
-                                  $approved_link = "<a class='text-primary' href='clearance/unit_clearance.php?u=".mask($unit_id)."&t=".mask('approved')."'>{$get_approved}</a>";
-                                  $declined_link = "<a class='text-primary' href='clearance/unit_clearance.php?u=".mask($unit_id)."&t=".mask('declined')."'>{$get_declined}</a>";
+                                  $deptCode = $row['deptCode'];
+                                  $collegeCode = $row['collegeCode'];
+
+                                  $student_profile = "<a class='text-info' href='student/student_profile.php?matric={$matric_no}&session={$acada_session}'>{$fullname}</a>";
+                                  $photo_link = "<img src='../student/passports/".$photo."' class='rounded-circle img-fluid' style='width:50px;height:50px;'>";
+
+                                  $deptCode_link = "<a class='text-info' href='department/departments.php?dept_code={$deptCode}&session={$acada_session}'>{$deptCode}</a>";
+
+                                  $collegeCode_link = "<a class='text-info' href='college/colleges.php?college_code={$collegeCode}&session={$acada_session}'>{$collegeCode}</a>";
+
 
                                   echo "<tr>";
                                     echo "<td>{$counter}.</td>";
-                                    echo "<td>{$unit_name}</td>";
-                                    echo "<td>{$submission_link}</td>";
-                                    echo "<td>{$pending_link}</td>";
-                                    echo "<td>{$approved_link}</td>";
-                                    echo "<td>{$declined_link}</td>";
+                                    echo "<td class='text-center'>{$photo_link}<div class='mt-1'>{$matric_no}</div></td>";
+                                    echo "<td>{$student_profile}<br/><small>{$dob}</small></td>";
+                                    echo "<td width='10%'>{$deptCode_link}<br/>{$collegeCode_link}</td>";
+                                    echo "<td width='15%'>{$email}</td>";
+                                    echo "<td width='10%'>{$phone}</td>";
+                                    echo "<td width='20%'>{$address}</td>";
+                                    echo "<td width='15%'>{$date_created}<br/><small>{$time_created}</small></td>";
                                   echo "</tr>";
 
                                   $counter++;
