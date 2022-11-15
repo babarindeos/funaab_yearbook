@@ -176,6 +176,27 @@
       }
 
 
+      public function deanLogin($username, $password, $session){
+          //$password_encrypt = sha1(md5(sha1($password)));
+
+          $sqlQuery  = "Select id, session, college_id, fullname, email, phone, file_no, access_code, verification_code,
+                        date_created from registered_deans where file_no=:username and access_code=:password and session=:session";
+                        
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor::customQuery()->prepare($sqlQuery);
+
+          //$this->date_created = date('Y-m-d H:i:s');
+          $password_encrypt = sha1(md5(sha1($password)));
+
+          $stmt->bindParam(":username",$username);
+          $stmt->bindParam(":password", $password_encrypt);
+          $stmt->bindParam(":session", $session);
+
+          $stmt->execute();
+          return $stmt;
+      }// end of logged
+
+
 
 
   }

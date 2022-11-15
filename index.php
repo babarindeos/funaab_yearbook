@@ -30,6 +30,13 @@
       require_once("functions/Login_ProcessStudentData.php");
 
 
+      $acadaSession = new AcademicSession();
+      $get_acada_session = $acadaSession->get_active_session();
+      $acada_session_recordset = $get_acada_session->fetch(PDO::FETCH_ASSOC);
+      $current_session = $acada_session_recordset['session'];
+
+
+
 
 
       $err_flag = 0;
@@ -42,12 +49,6 @@
           $regNumber = $login_matriculation_no;
 
           $login_portal_password = trim($_POST['portal_password']);
-
-
-          $acadaSession = new AcademicSession();
-          $get_acada_session = $acadaSession->get_active_session();
-          $acada_session_recordset = $get_acada_session->fetch(PDO::FETCH_ASSOC);
-          $current_session = $acada_session_recordset['session'];
 
           //$acadaSession = '2019/2020';
           $acadaSession = $current_session;
@@ -118,19 +119,24 @@
                     <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Clearance for Students Withdrawing/Graduating<br/>from the University.</h2></div>
               </div> -->
               <div>
-                    <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Yearbook 2019/2020</h2></div>
+                    <div class='px-2 py-2' style='background-color:#f1f1f1;opacity: 0.8; font-weight:bold;'><h2 class='mt-1'>Yearbook <?php echo $current_session; ?></h2></div>
               </div>
 
               <h4 class='mt-5 ml-3'>For Final Year Students</h4>
-              <ul>
+              <ol>
                   <li>Enter your Matriculation No. and Portal Password to login</li>
                   <li>Upload a good quality passport photograph of yourself</li>
+                    <ul>
+                        <li>Photograph must be of passport-size</li>
+                        <li>Photograph must cover only between head to shoulder portion of body</li>
+                        <li>Photograph must be on plain background</li>
+                    </ul>
                   <li>Provide your Day and Month of Birth</li>
                   <li>Provide accurate and functional email address</li>
-                  <li>Provide one or two functional phone number</li>
+                  <li>Provide one or two functional phone number(s)</li>
                   <li>Provide your contact address</li>
 
-              </ul>
+              </ol>
           </div>
 
 

@@ -8,7 +8,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
-      <!-- Home Sample
+
+
+      <li class="nav-item">
+        <a class="nav-link" id="navbarDropdownMenuLink-555"
+          aria-haspopup="true" aria-expanded="false" href="<?php echo $baseUrl.'cadmin/college/all_colleges.php'; ?>"> Colleges
+        </a>
+      </li>
+
+
+      <!-- Home Sampl
       <li class="nav-item active">
         <a class="nav-link" href="#">Home
           <span class="sr-only">(current)</span>
@@ -25,19 +34,34 @@
       </li>
       //-->
 
-      <!-- Office menu
+      <!-- Deans //-->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false"> Staff
+          aria-haspopup="true" aria-expanded="false"> Deans
         </a>
 
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
-          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/staff/create_staff.php'; ?>" > <i class="fas fa-user-plus"></i> Create Staff</a>
-          <a class="dropdown-item" href="<?php //echo $baseUrl.'cadmin/staff/staff_records.php'; ?>" > <i class="fas fa-users"></i> Staff Records</a>
+        <div class="dropdown-menu dropdown-success" aria-labelledby="navbarDropdownMenuLink-555">
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/deans/dean_access.php'; ?>" > <i class="fas fa-user-plus"></i> Register</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/deans/submissions.php'; ?>" > <i class="fas fa-users"></i> Submissions</a>
 
         </div>
       </li>
-      end office menu //-->
+      <!-- End of Deans //-->
+
+      <!-- HODs //-->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false"> HODs
+        </a>
+
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/hods/hod_access.php'; ?>" > <i class="fas fa-user-plus"></i> Register</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/hods/submissions.php'; ?>" > <i class="fas fa-users"></i> Submissions</a>
+
+        </div>
+      </li>
+      <!-- End of HODs //-->
+
 
       <!-- Project menu
       <li class="nav-item dropdown">
@@ -55,7 +79,7 @@
 
 
 
-      <!-- Message menu 
+      <!-- Message menu
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">Messages

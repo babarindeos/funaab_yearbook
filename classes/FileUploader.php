@@ -138,6 +138,11 @@
 
         public function uploadYearBookPassport($source, $file, $matric_no){
 
+              $newWidth = 600;
+            $newHeight = 600;
+
+            $this->resizedImage = $this->resizeImage($file, $newWidth, $newHeight);
+
             if ($file['name'] !=''){
                 $fileName = $file['name'];  // $_FILES['file']['name']
                 $split_name = explode('.', $fileName);
@@ -163,6 +168,37 @@
 
             }
 
+        }
+
+
+        public function resizeImage($file, $newWidth, $newHeight){
+
+          $uploadedFile = $_FILES['file']['tmp_name'];
+          $ext = pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION);
+          $sourceProperties = getimagesize($_FILES['file']['tmp_name']);
+          $imageType = $sourceProperties[2];
+          $resizedFileName = 'resizedfile.';
+
+          switch($imageType){
+              case IMAGETYPE_PNG:
+                  $imageSrc = imagecreatefrompng($uploadedFile);
+                  break;
+              case IMAGETYPE_JPEG:
+                  $imageSrc = imagecreatefromjpeg($uploadedFile);
+                  break;
+              case IMAGETYPE_GIF:
+                  $imageSrc = imagecreatefromgif($uploadedFile);
+                  break;
+          }
+              list($width,$height)=getimagesize($_FILES["file"]["tmp_name"]);
+              //$newHeight = ($height/$width) * $newWidth;
+              $tmp=imagecreatetruecolor($newWidth,$newHeight);
+              imagecopyresampled($tmp,$imageSrc,0,0,0,0,$newWidth,$newHeight,$width,$height);
+              //imagejpeg($tmp,$_FILES["file"]["tmp_name"],100);
+              //imagejpeg($tmp,$_FILES["file"]["tmp_name"]);
+              $resizedImage = imagejpeg($tmp,$_FILES["file"]["tmp_name"]);
+              //imagedestroy($tmp);
+              return $resizedImage;
         }
 
 

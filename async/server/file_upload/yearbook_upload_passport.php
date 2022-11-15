@@ -33,18 +33,29 @@
 
       //$file = round($file/1000);  // calculate file size in Kb, Mb, Gb, Tb
 
-      $fileUtil = new FileUploader();
-      $uploadAction = $fileUtil->uploadYearBookPassport($source, $file, $matric_no);
+      list($width, $height, $type, $attr) = getimagesize($_FILES['file']['tmp_name']);
 
-      session_start();
-      if ($uploadAction['status']=='success'){
-          //unset($_SESSION['yearbook_receipt_file']);
-          $_SESSION['yearbook_passport'] = $uploadAction['wp_filename'];
+      if($width>=600 && $height>=600){
+            $fileUtil = new FileUploader();
+            $uploadAction = $fileUtil->uploadYearBookPassport($source, $file, $matric_no);
+
+            session_start();
+            if ($uploadAction['status']=='success'){
+                //unset($_SESSION['yearbook_receipt_file']);
+                $_SESSION['yearbook_passport'] = $uploadAction['wp_filename'];
+            }else{
+                unset($_SESSION['yearbook_passport']);
+            }
+
+            $result = json_encode($uploadAction);
+
       }else{
-          unset($_SESSION['yearbook_passport']);
+            $status = 'error';
+            $response = array('status'=>'error','message'=>'Invalid image sizes. Photograph width and height must be greater than 600px.');
+            $result = json_encode($response);
       }
 
-      $result = json_encode($uploadAction);
+
 
       echo $result;
 

@@ -9,7 +9,7 @@ class Applicant implements ApplicantInterface{
 
       // $sqlQuery
       $sqlQuery = "SELECT regNumber, surname, firstname, othername, photo, gender, phone, email, emailFunaab, level, majorCode, deptCode,
-                   collegeCode, CGPA, acadaLevel, programme, dateCreated FROM applicants WHERE regNumber=:regNumber";
+                   collegeCode, CGPA, acadaLevel, dateCreated FROM applicants WHERE regNumber=:regNumber";
 
       // pdo object
       $QueryExecutor = new PDO_QueryExecutor();

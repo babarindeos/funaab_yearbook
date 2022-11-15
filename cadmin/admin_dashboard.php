@@ -46,9 +46,15 @@
     <!-- Payment table //-->
     <div class="row">
 
+
+
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 px-3 py-3 border rounded">
 
-
+                <div class='mb-3'>
+                        <?php
+                              echo "<h4>Records Found: ".number_format($get_current_yearbook->rowCount())."</h4>";
+                        ?>
+                </div>
                 <div>
                     <table id='tblData' class="table">
                         <thead>
@@ -89,7 +95,7 @@
 
                                   $deptCode_link = "<a class='text-info' href='department/departments.php?dept_code={$deptCode}&session={$acada_session}'>{$deptCode}</a>";
 
-                                  $collegeCode_link = "<a class='text-info' href='college/colleges.php?college_code={$collegeCode}&session={$acada_session}'>{$collegeCode}</a>";
+                                  $collegeCode_link = "<a class='text-info' href='college/college.php?college_code={$collegeCode}&session={$acada_session}'>{$collegeCode}</a>";
 
 
                                   echo "<tr>";

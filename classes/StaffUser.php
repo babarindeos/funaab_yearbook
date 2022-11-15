@@ -199,6 +199,70 @@
       }
 
 
+      public function register_dean($fields){
+          $session = $fields['session'];
+          $file_no = $fields['file_no'];
+          $college_id = $fields['college_id'];
+          $file_no = $fields['file_no'];
+          $fullname = $fields['fullname'];
+          $email = $fields['funaab_email'];
+          $phone = $fields['phone'];
+          $password = $fields['password'];
+          $password_encrypt = $fields['password_encrypt'];
+          $access_code = $password_encrypt;
+          $verification_code = $fields['verification_code'];
+
+          $sqlQuery = "Insert into registered_deans set session=:session, college_id=:college_id, file_no=:file_no,
+                      fullname=:fullname, email=:email, phone=:phone, access_code=:access_code, verification_code=:verification_code";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->bindParam(":session", $session);
+          $stmt->bindParam(":college_id", $college_id);
+          $stmt->bindParam(":file_no", $file_no);
+          $stmt->bindParam(":fullname", $fullname);
+          $stmt->bindParam(":email", $email);
+          $stmt->bindParam(":phone", $phone);
+          $stmt->bindParam(":access_code", $access_code);
+          $stmt->bindParam(":verification_code", $verification_code);
+
+          $stmt->execute();
+
+          return $stmt;
+      }
+
+      public function get_dean_info($auth_id){
+          $sqlQuery = "Select id, session, college_id, file_no, fullname, email, phone, access_code, verification_code, date_created
+                       from registered_deans where id=:id";
+
+          $QueryExecutor = new PDO_QueryExecutor();
+          $stmt = $QueryExecutor->customQuery()->prepare($sqlQuery);
+
+          $stmt->bindParam(":id", $auth_id);
+
+          $stmt->execute();
+
+          return $stmt;
+
+      }
+
+
+      public function is_dean_registered($active_session, $file_no){
+
+          $this->sqlQuery = "Select id, file_no, fullname from registered_deans where session=:session and file_no=:file_no";
+          $this->QueryExecutor = new PDO_QueryExecutor();
+          $this->stmt = $this->QueryExecutor->customQuery()->prepare($this->sqlQuery);
+
+          // bind param
+          $this->stmt->bindParam(":session", $active_session);
+          $this->stmt->bindParam(":file_no", $file_no);
+
+          $this->stmt->execute();
+
+          return $this->stmt;
+      }
+
   }
 
 
