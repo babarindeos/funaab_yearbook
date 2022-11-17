@@ -279,7 +279,8 @@ if (isset($_GET['address'])){
                     ?>
                 </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 border rounded text-center mt-3">
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 border rounded text-center mt-3">
+                      <label for="file">
                       <?php
 
                           if (isset($_SESSION['yearbook_passport']))
@@ -292,7 +293,8 @@ if (isset($_GET['address'])){
 
 
 
-                          echo "<div class='avatar mx-auto white mt-4'><img width='300px' id='img_passport' src='{$generic_photo}' alt='{$surname} photo' class='rounded img-fluid border'></div> ";
+                          echo "<div class='avatar mx-auto white mt-4'><img width='350px' id='img_passport' src='{$generic_photo}' alt='{$surname} photo' class='rounded img-fluid border'></div> ";
+
                           echo "<div class=' mt-1 mb-4 font-weight-bold'>Passport Photograph</div>";
 
                       ?>
@@ -328,8 +330,9 @@ if (isset($_GET['address'])){
                                 ?>
                       <!-- end of file uploader //-->
                       <!--<button id='upload_passport' type='btn btn-sm btn-warning'>Upload Passport</button> //-->
+                      </label>
                 </div>
-                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                           <!-- Postback feedback //-->
                             <?php
                                 if (isset($_POST['btnSubmit'])){
@@ -464,6 +467,7 @@ if (isset($_GET['address'])){
   </div><!-- end of container //-->
 
         <input id='matric_no' type='hidden' value="<?php echo $matric_no; ?>" />
+        <input id='user_passport' type='hidden' value="<?php echo $generic_photo; ?>" />
 
 
         <br/><br/><br/>
@@ -471,97 +475,58 @@ if (isset($_GET['address'])){
               //footer
               require_once("../includes/footer.php");
          ?>
-
 <script>
-    $(document).ready(function(){
+  $(document).ready(function(){
+        $(document).on('change', '#file', function(){
+            var property = document.getElementById("file").files[0];
+            var image_name = property.name;
+            var image_extension = image_name.split('.').pop().toLowerCase();
 
-      // file upload
-              $("#file").on("change", function(){
-                    var property = document.getElementById("file").files[0];
-                    var image_name = property.name;
+            if (jQuery.inArray(image_extension, ['gif', 'png', 'jpg', 'jpeg', 'jpeg'])==-1){
+                alert("The selected file is invalid for upload as a picture");
+            }else{
+                var image_size = property.size;
+                var matric_no = $("#matric_no").val();
 
-                    var image_extension = image_name.split('.').pop().toLowerCase();
+                if (image_size>5000000){
+                        alert("The selected picture is larger than the required picture size. Please resize the picture.");
+                }else{
+                        $("#img_passport").attr('src', '../assets/spinner.gif');
 
-                    if (jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])==-1){
-                          alert("Invalid image format. Please select an image file in any of the specified format.");
-                    }else{
+                        var form_data = new FormData();
 
-                        run_file_upload(property);
-                    }
+                        console.log(form_data);
+                        form_data.append("file", property);
 
-              });
+                        $.ajax({
+                            url: '../async/server/file_upload/yearbook_upload_passport.php?source=students_affairs&matric_no='+matric_no,
+                            method: 'POST',
+                            data: form_data,
+                            dataType: 'json',
+                            contentType:false,
+                            cache: false,
+                            processData: false,
+                            beforeSend: function(){},
+                            success: function(data){
+                               console.log(data);
+                               if (data.status=='success'){
+                                  var img_location = "passports/"+data.wp_filename;
+                                  console.log(img_location);
+                                  $("#img_passport").attr("src",img_location + '?' + new Date().getTime());
+                               }else{
+                                  var img_location = $("#user_passport").val();
+                                  $("#img_passport").attr("src",img_location);
+                                  alert(data.message);
 
-// -------------------------------------------------------------------------------------------
-// function to load files
-    function run_file_upload(property){
-          var image_size = property.size;
-          image_size = image_size/1024;
-          //alert(image_size);
-          if (image_size>20000){
-              alert("The file is larger than the allowed 20MB size. Please resize and try again.");
-          }else{
-                  var form_data = new FormData();
-                  form_data.append("file", property);
-                  //form_data.append("source", 'announcement');
-                  //form_data.append("file_type", file_type);
-
-                  var matric_no = $("#matric_no").val();
-
-                  $.ajax({
-                      url: '../async/server/file_upload/yearbook_upload_passport.php?source=students_affairs&matric_no='+matric_no,
-                      method: "POST",
-                      data: form_data,
-                      dataType:  'json',
-                      contentType: false,
-                      cache: false,
-                      processData: false,
-                      beforeSend: function(){
-                          $("#file_uploader").hide();
-                          $("#spinner").show();
-                      },
-                      success: function(data){
-                          //console.log("am here");
-                          //console.log(data.status);
-                          //alert(data);
-                          $("#spinner").hide();
-                          $("#file_uploader").show();
-
-                          //data = JSON.parse(data);
-                          if (data.status=='success'){
-
-                              $("#uploaded_passport").val(data.wp_filename);
-
-                              var img_location = "passports/"+data.wp_filename;
-
-                              console.log(img_location);
-                              $("#img_passport").attr("src",img_location);
-
-                              var dob_day = $("#dob_day").val();
-                              var dob_month = $("#dob_month").val();
-                              var phone = $("#phone").val();
-                              var email = $("#email").val();
-                              var address = $("#address").val();
-
-                              location.reload(true);
-                              var loc = "profile_update.php?dob_day="+dob_day+"&dob_month="+dob_month+"&phone="+phone+"&email="+email+"&address="+address;
-                              //window.location.href= loc;
-
-                          }else{
-                              alert(data.message);
-                          }
-
-                      }
-                  });
-          } // end of if
-    }
-// -------------------------------------------------------------------------------------------
+                               }
+                            }
+                        });
+                }
 
 
+            }
+        });
+  });
 
-
-
-//---------------------------------------------------------------------------------------------
-
-});  // end of document.ready(function())
 
 </script>

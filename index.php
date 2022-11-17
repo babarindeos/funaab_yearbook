@@ -76,9 +76,14 @@
               $studentship_duration = $current_year - $start_year;
               $isEligible = false;
 
-              if ($studentship_duration >= $minDuration){
+              //var_dump($json);
+              $minDuration = $json->minDuration;
+
+
+              if ($minDuration!=''  && $studentship_duration >= $minDuration){
                 $isEligible = true;
               }
+
 
 
               //echo "<br/><br/><br/><br/><p><p>".$json->Level;
