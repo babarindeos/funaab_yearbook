@@ -63,6 +63,21 @@
       <!-- End of HODs //-->
 
 
+      <!-- Students //-->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false"> Students
+        </a>
+
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink-555">
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/students/submissions.php'; ?>" > <i class="fas fa-user-plus"></i> Submissions</a>
+          <a class="dropdown-item" href="<?php echo $baseUrl.'cadmin/students/collage.php'; ?>" > <i class="fas fa-users"></i> Collage</a>
+
+        </div>
+      </li>
+      <!-- End of Students //-->
+
+
       <!-- Project menu
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"

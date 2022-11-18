@@ -22,7 +22,7 @@
 
   function miniSuccessAlert($message){
     ?>
-        <div class="alert alert-warning" role="alert">
+        <div class="alert alert-success" role="alert">
             <i class="far fa-clock"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $message; ?>
         </div>
 
