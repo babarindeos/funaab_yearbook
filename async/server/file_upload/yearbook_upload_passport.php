@@ -43,10 +43,11 @@
             if ($uploadAction['status']=='success'){
                 //unset($_SESSION['yearbook_receipt_file']);
                 $_SESSION['yearbook_passport'] = $uploadAction['wp_filename'];
+
             }else{
                 if (isset($_SESSION['yearbook_passport'])){
                     unset($_SESSION['yearbook_passport']);
-                }                
+                }
             }
 
             $result = json_encode($uploadAction);

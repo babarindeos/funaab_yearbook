@@ -87,7 +87,7 @@
 
 
               //echo "<br/><br/><br/><br/><p><p>".$json->Level;
-              if ($isEligible){
+              //if ($isEligible){
                     if ($form_login_portal_password==$portal_passwordHash){
 
                         $err_msg = processStudentData($regNumber, $json);
@@ -101,10 +101,10 @@
                         $err_msg = "Invalid Sign-in Credentials";
 
                     } //  end of $form_login_portal_password
-              }else{
-                        $err_flag = 1;
-                        $err_msg = "You are ineligible to access this service.";
-              }
+              //}else{
+                      //  $err_flag = 1;
+                      ///  $err_msg = "You are ineligible to access this service.";
+              //}
 
 
 
@@ -142,6 +142,9 @@
                   <li>Provide your contact address</li>
 
               </ol>
+          </div>
+          <div class='ml-3 mt-5'>
+                <h5 class='font-weight-bold'>Deadline for submission is 6th December, 2022.</h5>
           </div>
 
 

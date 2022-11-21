@@ -41,10 +41,13 @@ error_reporting(E_ALL);
         $address = $fields['address'];
         $photo = $fields['uploaded_passport'];
         $hoc = $fields['hoc'];
-
+        $status = '';
+        $status_msg = '';
+        $date_modified = date('Y-m-d H:i:s');
 
         $this->sqlQuery = "Update yearbook set session=:session, fullname=:fullname, dob_day=:dob_day, dob_month=:dob_month,
-                           dob=:dob, email=:email, phone=:phone, address=:address, photo=:photo, hoc=:hoc where matric_no=:matric_no";
+                           dob=:dob, email=:email, phone=:phone, address=:address, photo=:photo, hoc=:hoc, status=:status,
+                           status_msg=:status_msg, date_modified=:date_modified where matric_no=:matric_no";
 
         $this->QueryExecutor = new PDO_QueryExecutor();
         $this->stmt = $this->QueryExecutor->customQuery()->prepare($this->sqlQuery);
@@ -61,6 +64,10 @@ error_reporting(E_ALL);
         $this->stmt->bindParam(":address", $address);
         $this->stmt->bindParam(":photo", $photo);
         $this->stmt->bindParam(":hoc", $hoc);
+        $this->stmt->bindParam(":status", $status);
+        $this->stmt->bindParam(":status_msg", $status_msg);
+        $this->stmt->bindParam(":date_modified", $date_modified);
+
 
         $this->stmt->execute();
 
@@ -80,10 +87,13 @@ error_reporting(E_ALL);
           $address = $fields['address'];
           $photo = $fields['uploaded_passport'];
           $hoc = $fields['hoc'];
+          $status = '';
+          $status_msg = '';
 
 
           $this->sqlQuery = "Insert into yearbook set session=:session, matric_no=:matric_no, fullname=:fullname, dob_day=:dob_day,
-                             dob_month=:dob_month, dob=:dob, email=:email, phone=:phone, address=:address, photo=:photo, hoc=:hoc";
+                             dob_month=:dob_month, dob=:dob, email=:email, phone=:phone, address=:address, photo=:photo, hoc=:hoc,
+                             status=:status, status_msg=:status_msg";
 
           $this->QueryExecutor = new PDO_QueryExecutor();
           $this->stmt = $this->QueryExecutor->customQuery()->prepare($this->sqlQuery);
@@ -100,6 +110,8 @@ error_reporting(E_ALL);
           $this->stmt->bindParam(":address", $address);
           $this->stmt->bindParam(":photo", $photo);
           $this->stmt->bindParam(":hoc", $hoc);
+          $this->stmt->bindParam(":status", $status);
+          $this->stmt->bindParam(":status_msg", $status_msg);
 
           $this->stmt->execute();
 
